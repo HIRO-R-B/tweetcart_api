@@ -172,7 +172,7 @@ module GTK
         base.module_eval do
           alias_method :inr?, :inside_rect?
           alias_method :ir?,  :intersect_rect?
-          alias_method :sc,   :scale_rect
+          alias_method :sr,   :scale_rect
           alias_method :agt,  :angle_to
           alias_method :agf,  :angle_from
           alias_method :pic?, :point_inside_circle?
@@ -187,7 +187,7 @@ module GTK
         base.singleton_class.instance_eval do
           alias_method :inr?, :inside_rect?
           alias_method :ir?,  :intersect_rect?
-          alias_method :sc,   :scale_rect
+          alias_method :sr,   :scale_rect
           alias_method :agt,  :angle_to
           alias_method :agf,  :angle_from
           alias_method :pic?, :point_inside_circle?

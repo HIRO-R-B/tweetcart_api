@@ -149,6 +149,36 @@ module GTK
     end
   end
 
+  class Keyboard
+    module Tweetcart
+      def self.included(base)
+        base.class_eval do
+          alias_method :ku, :key_up
+          alias_method :kd, :key_down
+          alias_method :kh, :key_held
+          alias_method :hf, :has_focus
+          alias_method :l,  :left
+          alias_method :u,  :up
+          alias_method :r,  :right
+          alias_method :d,  :down
+          alias_method :k,  :key
+        end
+      end
+    end
+  end
+
+  class KeyboardKeys
+    module Tweetcart
+      def self.included(base)
+        base.class_eval do
+          alias_method :lr, :left_right
+          alias_method :ud, :up_down
+          alias_method :tk, :truthy_keys
+        end
+      end
+    end
+  end
+
   class Grid
     module Tweetcart
       def self.included(base)
@@ -184,7 +214,7 @@ module GTK
       end
 
       def self.extended(base)
-        base.singleton_class.instance_eval do
+        base.singleton_class.module_eval do
           alias_method :inr?, :inside_rect?
           alias_method :ir?,  :intersect_rect?
           alias_method :sr,   :scale_rect

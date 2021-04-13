@@ -8,6 +8,7 @@ def tick args
     args.inputs.class.include          ::GTK::Inputs::Tweetcart
     args.inputs.keyboard.class.include ::GTK::Keyboard::Tweetcart
     ::GTK::KeyboardKeys.include        ::GTK::KeyboardKeys::Tweetcart
+    args.inputs.mouse.class.include    ::GTK::Mouse::Tweetcart
     args.grid.class.include            ::GTK::Grid::Tweetcart
     args.geometry.include              ::GTK::Geometry::Tweetcart
     args.geometry.extend               ::GTK::Geometry::Tweetcart
@@ -22,6 +23,7 @@ end
 
 def t a
   a.bg=[127]*3
+
   # a.os<<[99,99,1e3,1e3]
   a.osp<<[10,10,10,10,'sprites/square/blue.png']
   a.op<<[20,10,10,10,0,255,0].solid
@@ -62,5 +64,14 @@ def t a
   a.o_li<<$f if a.tc<1
   $f.x+=1
 
-  a.ol << [0, 720, "#{a.i.k.kh.tk}"]
+  a.o.l << [1280, 720, a.tc, 0, 2]
+  a.ol  << [ # key state testing
+    "kd: #{a.ikd.tk}",
+    "kh: #{a.ik.kh.tk}",
+    "ku: #{a.i.k.ku.tk}",
+    "#text: #{a.i.t}"
+  ].map_with_index { |s, i| [0, 720 - i*22, s] }
+  a.os << [a.im.p.x, a.im.p.y, 5, 5] if a.im.m # mouse move
+  a.os << [a.imc.x, a.imc.y, 100, 100] if a.imc # mouse click
+  a.os << [a.i.m.p.x, a.i.m.p.y, 20, 20, [a.im.w.y < 0 ? 255 : 0]*3] if a.im.w # mouse wheel
 end

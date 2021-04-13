@@ -139,8 +139,10 @@ module GTK
           alias_method :r,  :right
           alias_method :lr, :left_right
           alias_method :ud, :up_down
+          alias_method :dv, :directional_vector
           alias_method :t,  :text
           alias_method :m,  :mouse
+          alias_method :c,  :click
           alias_method :c1, :controller_one
           alias_method :c2, :controller_two
           alias_method :k,  :keyboard
@@ -174,6 +176,38 @@ module GTK
           alias_method :lr, :left_right
           alias_method :ud, :up_down
           alias_method :tk, :truthy_keys
+        end
+      end
+    end
+  end
+
+  class Mouse
+    module Tweetcart
+      def self.included(base)
+        base.class_eval do
+          alias_method :p,    :point
+          alias_method :inr?, :inside_rect?
+          alias_method :ic?,  :inside_circle?
+          alias_method :ir?,  :intersect_rect?
+
+          alias_method :c,    :click
+          alias_method :pc,   :previous_click
+
+          alias_method :m,    :moved
+          alias_method :ma,   :moved_at
+          alias_method :gma,  :global_moved_at
+
+          alias_method :u,    :up
+          alias_method :d,    :down
+          alias_method :bb,   :button_bits
+          alias_method :bl,   :button_left
+          alias_method :bm,   :button_middle
+          alias_method :br,   :button_right
+          alias_method :bx1,  :button_x1
+          alias_method :bx2,  :button_x2
+          alias_method :w,    :wheel
+
+          alias_method :hf,   :has_focus
         end
       end
     end

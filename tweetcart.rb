@@ -258,7 +258,7 @@ module GTK
           alias_method :cir,  :center_inside_rect
           alias_method :cirx, :center_inside_rect_x
           alias_method :ciry, :center_inside_rect_y
-          # alias_method :ar,   :anchor_rect
+          # alias_method :ar,   :anchor_rect # FIXME :: Doesn't exist atm
 
           alias_method :sl,   :shift_line
           alias_method :lyi,  :line_y_intercept

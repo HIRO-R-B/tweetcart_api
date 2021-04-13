@@ -166,6 +166,51 @@ module GTK
     end
   end
 
+  module Geometry
+    module Tweetcart
+      def self.included(base)
+        base.module_eval do
+          alias_method :inr?, :inside_rect?
+          alias_method :ir?,  :intersect_rect?
+          alias_method :sc,   :scale_rect
+          alias_method :agt,  :angle_to
+          alias_method :agf,  :angle_from
+          alias_method :pic?, :point_inside_circle?
+          alias_method :cir,  :center_inside_rect
+          alias_method :cirx, :center_inside_rect_x
+          alias_method :ciry, :center_inside_rect_y
+          alias_method :ar,   :anchor_rect
+        end
+      end
+
+      def self.extended(base)
+        base.singleton_class.instance_eval do
+          alias_method :inr?, :inside_rect?
+          alias_method :ir?,  :intersect_rect?
+          alias_method :sc,   :scale_rect
+          alias_method :agt,  :angle_to
+          alias_method :agf,  :angle_from
+          alias_method :pic?, :point_inside_circle?
+          alias_method :cir,  :center_inside_rect
+          alias_method :cirx, :center_inside_rect_x
+          alias_method :ciry, :center_inside_rect_y
+          # alias_method :ar,   :anchor_rect
+
+          alias_method :sl,   :shift_line
+          alias_method :lyi,  :line_y_intercept
+          alias_method :abl,  :angle_between_lines
+          alias_method :ls,   :line_slope
+          alias_method :lrr,  :line_rise_run
+          alias_method :rt,   :ray_test
+          alias_method :lr,   :line_rect
+          alias_method :li,   :line_intersect
+          alias_method :d,    :distance
+          alias_method :cb,   :cubic_bezier
+        end
+      end
+    end
+  end
+
   class Main
     module Tweetcart
       include Math

@@ -3,11 +3,14 @@ require 'app/tweetcart.rb'
 $gtk.reset
 def tick args
   if Kernel.global_tick_count == 0
-    args.class.include         ::GTK::Args::Tweetcart
-    args.outputs.class.include ::GTK::Outputs::Tweetcart
-    args.inputs.class.include  ::GTK::Inputs::Tweetcart
-    args.grid.class.include    ::GTK::Grid::Tweetcart
-    $top_level.include         ::GTK::Main::Tweetcart
+    args.class.include          ::GTK::Args::Tweetcart
+    args.outputs.class.include  ::GTK::Outputs::Tweetcart
+    args.inputs.class.include   ::GTK::Inputs::Tweetcart
+    args.grid.class.include     ::GTK::Grid::Tweetcart
+    args.geometry.include       ::GTK::Geometry::Tweetcart
+    args.geometry.extend        ::GTK::Geometry::Tweetcart
+
+    $top_level.include          ::GTK::Main::Tweetcart
 
     args.outputs[:p].w = 1
     args.outputs[:p].h = 1

@@ -65,15 +65,13 @@ module GTK
         self.outputs.static_borders
       end
 
-      # Persistence
-      def ops
+      def ops # Persistent Outputs
         self.outputs.ps
       end
 
-      def opsc
+      def opsc # Persistent Outputs Clear
         self.outputs.psc
       end
-      # Persistence
 
       def i
         self.inputs
@@ -115,7 +113,6 @@ module GTK
 
   class Outputs
     module Tweetcart
-
       def ps # Persistent Outputs
         if @persistence_initialized
           unless @buffer_swap.new?
@@ -336,6 +333,14 @@ module GTK
     end
   end
 
+  module ArrayTweetcart
+    def self.included(base)
+      base.class_eval do
+        alias_method :ir?, :intersect_rect?
+      end
+    end
+  end
+
   module HashTweetcart
     def self.included(base)
       base.class_eval do
@@ -366,6 +371,7 @@ module GTK
       args.geometry.include                          ::GTK::Geometry::Tweetcart
       args.geometry.extend                           ::GTK::Geometry::Tweetcart
       GTK::Primitive::ConversionCapabilities.include ::GTK::Primitive::ConversionCapabilities::Tweetcart
+      Array.include                                  ::GTK::ArrayTweetcart
       Hash.include                                   ::GTK::HashTweetcart
       $top_level.include                             ::GTK::Tweetcart
     end

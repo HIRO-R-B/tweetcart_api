@@ -27,24 +27,34 @@ def t a
   a.osp<<[100,100,100,100,:p,255,255,255,0,0]
   a.s.b||=10
   a.s.b+=1
+
+  $x += 2
+  $x %= 800
+
   $a||=[50,10,10,10]
   a.o_s<<$a if a.tc<1
-  $a.x+=1
+  $a.x = 50 + $x
+
   $b||=[50,20,10,10,:p]
   a.o_sp<<$b if a.tc<1
-  $b.x+=1
-  $c||=[50,30,10,10,:p].sprite
-  a.o_p<<$c #if a.tc<1
-  $c.x+=1
+  $b.x = 50 + $x
+
+  $c=[50,30,10,10,:p].sprite
+  a.o_p<<$c
+  $c.x = 50 + $x
+  a.o_p.clear if a.o_p.count > 50
+
   $d||=[50,40,10,10]
   a.o_b<<$d if a.tc<1
-  $d.x+=1
+  $d.x = 50 + $x
+
   $e||=[50,50,'a']
   a.o_l<<$e if a.tc<1
-  $e.x+=1
+  $e.x = 50 + $x
+
   $f||=[50,50,70,70]
   a.o_li<<$f if a.tc<1
-  $f.x+=1
+  $f.x = 50 + $x
 
   a.o.l << [1280, 720, a.tc, 0, 2]
   a.ol  << [ # key state testing

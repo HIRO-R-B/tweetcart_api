@@ -325,7 +325,7 @@ module GTK
       $top_level.include                             ::GTK::Tweetcart
     end
 
-    def self.setup_tweetcart_textures args
+    def self.setup_textures args
       # setup :p 1 pixel texture
       args.outputs[:p].w = 1
       args.outputs[:p].h = 1
@@ -343,6 +343,11 @@ module GTK
         l = Math.sqrt(r * r - h * h)
         args.outputs[:c].lines << {x: i, y: r - l, x2: i, y2: r + l, r: 255, g: 255, b: 255}
       end
+    end
+
+    def self.setup args
+      setup_monkey_patches args
+      setup_textures args
     end
   end
 end

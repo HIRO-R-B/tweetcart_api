@@ -3,8 +3,7 @@ require 'app/tweetcart.rb'
 $gtk.reset
 def tick args
   if Kernel.global_tick_count == 0
-    GTK::Tweetcart.setup_monkey_patches args
-    GTK::Tweetcart.setup_tweetcart_textures args
+    GTK::Tweetcart.setup args
   end
   t args
 end

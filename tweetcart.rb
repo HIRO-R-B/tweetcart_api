@@ -118,8 +118,7 @@ module GTK
 
       def ps # Persistent Outputs
         if @persistence_initialized
-          if @buffer_swap.new?
-          else
+          unless @buffer_swap.new?
             @buffer_a, @buffer_b = @buffer_b, @buffer_a
             @buffer[:path] = @buffer_b
 

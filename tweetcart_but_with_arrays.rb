@@ -337,7 +337,7 @@ module GTK
               :l,  :label,
               :li, :line,
               :bo, :border
-          ].each_slice(2) { |new, old| alias_method new, old }
+            ].each_slice(2) { |new, old| alias_method new, old }
           end
         end
       end
@@ -396,8 +396,10 @@ module GTK
   module FixnumTweetcart
     def self.included(base)
       base.class_eval do
-        alias_method :ev?, :even?
-        alias_method :od?, :odd?
+        [
+          :ev?, :even?,
+          :od?, :odd?
+        ].each_slice(2) { |new, old| alias_method new, old }
       end
     end
   end
@@ -405,7 +407,9 @@ module GTK
   module ArrayTweetcart
     def self.included(base)
       base.class_eval do
-        alias_method :ir?, :intersect_rect?
+        [
+          :ir?, :intersect_rect?
+        ].each_slice(2) { |new, old| alias_method new, old }
       end
     end
   end
@@ -413,11 +417,13 @@ module GTK
   module HashTweetcart
     def self.included(base)
       base.class_eval do
-        alias_method :s,  :solid
-        alias_method :sp, :sprite
-        alias_method :l,  :label
-        alias_method :li, :line
-        alias_method :bo, :border
+        [
+          :s,  :solid,
+          :sp, :sprite,
+          :l,  :label,
+          :li, :line,
+          :bo, :border
+        ].each_slice(2) { |new, old| alias_method new, old }
       end
     end
   end

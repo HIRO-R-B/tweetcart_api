@@ -333,6 +333,64 @@ module GTK
     end
   end
 
+  module NumericTweetcart
+    def self.included(base)
+      base.class_eval do
+        alias_method :s,   :seconds
+        alias_method :tb,  :to_byte
+        alias_method :cw,  :clamp_wrap
+        alias_method :et,  :elapsed_time
+        alias_method :etp, :elapsed_time_percent
+        alias_method :n?,  :new?
+        alias_method :e?,  :elapsed?
+        alias_method :fi,  :frame_index
+        alias_method :z?,  :zero?
+        alias_method :r,   :randomize
+        alias_method :rs,  :rand_sign
+        alias_method :rr,  :rand_ratio
+        alias_method :rd,  :remainder_of_divide
+        alias_method :ee,  :ease_extended
+        alias_method :ge,  :global_ease
+        alias_method :e,   :ease
+        alias_method :ese, :ease_spline_extended
+        alias_method :es,  :ease_spline
+        alias_method :tr,  :to_radians
+        alias_method :td,  :to_degrees
+        alias_method :ts,  :to_square
+        alias_method :v,   :vector
+        alias_method :vy,  :vector_y
+        alias_method :vx,  :vector_x
+        alias_method :xv,  :x_vector
+        alias_method :yv,  :y_vector
+        alias_method :mz?, :mod_zero?
+        alias_method :zm?, :zmod?
+        alias_method :fd,  :fdiv
+        alias_method :id,  :idiv
+        alias_method :t,   :towards
+        alias_method :mwy, :map_with_ys
+        alias_method :co,  :combinations
+        alias_method :c,   :cap
+        alias_method :cmm, :cap_min_max
+        alias_method :n,   :numbers
+
+        alias_method :m,   :map
+        alias_method :ea,  :each
+
+        alias_method :fr,  :from_right
+        alias_method :ft,  :from_top
+      end
+    end
+  end
+
+  module FixnumTweetcart
+    def self.included(base)
+      base.class_eval do
+        alias_method :ev?, :even?
+        alias_method :od?, :odd?
+      end
+    end
+  end
+
   module ArrayTweetcart
     def self.included(base)
       base.class_eval do
@@ -373,6 +431,7 @@ module GTK
       GTK::Primitive::ConversionCapabilities.include ::GTK::Primitive::ConversionCapabilities::Tweetcart
       Array.include                                  ::GTK::ArrayTweetcart
       Hash.include                                   ::GTK::HashTweetcart
+      Numeric.include                                ::GTK::NumericTweetcart
       $top_level.include                             ::GTK::Tweetcart
     end
 

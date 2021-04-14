@@ -53,7 +53,6 @@ def t a
     "ku: #{a.i.k.ku.tk}",
     "#text: #{a.i.t}"
   ].map_with_index { |s, i| [0, 720 - i*22, s] }
-  a.os << [a.im.p.x, a.im.p.y, 5, 5] if a.im.m # mouse move
   # a.os << [a.imc.x, a.imc.y, 100, 100] if a.imc # mouse click
   a.os << [a.i.m.p.x, a.i.m.p.y, 20, 20, [a.im.w.y < 0 ? 255 : 0]*3] if a.im.w # mouse wheel
 
@@ -69,4 +68,7 @@ def t a
     $circle[8]=rand(255)
     $circle[9]=rand(255)
   end
+
+  a.ops.s << [a.im.p.x, a.im.p.y, 5, 5] if a.im.m # mouse move, to persistence
+  a.opsc if a.imc # clear persistence
 end

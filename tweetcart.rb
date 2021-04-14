@@ -65,6 +65,16 @@ module GTK
         self.outputs.static_borders
       end
 
+      # Persistence
+      def ops
+        self.outputs.ps
+      end
+
+      def opsc
+        self.outputs.psc
+      end
+      # Persistence
+
       def i
         self.inputs
       end
@@ -105,6 +115,42 @@ module GTK
 
   class Outputs
     module Tweetcart
+
+      def ps # Persistent Outputs
+        if @persistence_initialized
+          if @buffer_swap.new?
+          else
+            @buffer_a, @buffer_b = @buffer_b, @buffer_a
+            @buffer[:path] = @buffer_b
+
+            self[@buffer_a].sprites << @buffer
+            self.sprites << @buffer
+
+            @buffer_swap = Kernel.tick_count
+          end
+        else
+          @buffer_a = :persistent_buffer_a
+          @buffer_b = :persistent_buffer_b
+
+          self[@buffer_a]
+          self[@buffer_b]
+
+          @buffer = { w: 1280, h: 720 }.sprite
+          @buffer_swap = Kernel.tick_count
+
+          @persistence_initialized = true
+        end
+
+        self[@buffer_a]
+      end
+
+      def psc
+        self[@buffer_a]
+        self[@buffer_b]
+
+        nil
+      end
+
       def self.included(base)
         base.class_eval do
           alias_method :s,  :solids

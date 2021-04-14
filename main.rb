@@ -3,20 +3,8 @@ require 'app/tweetcart.rb'
 $gtk.reset
 def tick args
   if Kernel.global_tick_count == 0
-    args.class.include                 ::GTK::Args::Tweetcart
-    args.outputs.class.include         ::GTK::Outputs::Tweetcart
-    args.inputs.class.include          ::GTK::Inputs::Tweetcart
-    args.inputs.keyboard.class.include ::GTK::Keyboard::Tweetcart
-    ::GTK::KeyboardKeys.include        ::GTK::KeyboardKeys::Tweetcart
-    args.inputs.mouse.class.include    ::GTK::Mouse::Tweetcart
-    args.grid.class.include            ::GTK::Grid::Tweetcart
-    args.geometry.include              ::GTK::Geometry::Tweetcart
-    args.geometry.extend               ::GTK::Geometry::Tweetcart
-    $top_level.include                 ::GTK::Main::Tweetcart
-
-    args.outputs[:p].w = 1
-    args.outputs[:p].h = 1
-    args.outputs[:p].solids << [0, 0, 1, 1, 255, 255, 255]
+    GTK::Tweetcart.setup_monkey_patches args
+    GTK::Tweetcart.setup_tweetcart_textures args
   end
   t args
 end
@@ -36,11 +24,6 @@ def t a
   puts "u" if a.iu
   puts "d" if a.id
   # puts sin(1)
-  if a.tick_count < 1
-    a.outputs[:px].w = 1
-    a.outputs[:px].h = 1
-    a.outputs[:px].solids << [0, 0, 1, 1, 255, 255, 255]
-  end
 
   a.osp<<[100,100,100,100,:p,255,255,255,0,0]
   a.s.b||=10
@@ -72,6 +55,19 @@ def t a
     "#text: #{a.i.t}"
   ].map_with_index { |s, i| [0, 720 - i*22, s] }
   a.os << [a.im.p.x, a.im.p.y, 5, 5] if a.im.m # mouse move
-  a.os << [a.imc.x, a.imc.y, 100, 100] if a.imc # mouse click
+  # a.os << [a.imc.x, a.imc.y, 100, 100] if a.imc # mouse click
   a.os << [a.i.m.p.x, a.i.m.p.y, 20, 20, [a.im.w.y < 0 ? 255 : 0]*3] if a.im.w # mouse wheel
+
+  a.osp<<[50,60,10,10,:p]
+  $circle||=[60,60,100,100,:c,0,255,255,0,255]
+  a.o_sp<<$circle if a.tc<1
+  if a.imc
+    $circle.w=r=rand(300)
+    $circle.h=r
+    $circle.x=a.im.x-r/2
+    $circle.y=a.im.y-r/2
+    $circle[7]=rand(255)
+    $circle[8]=rand(255)
+    $circle[9]=rand(255)
+  end
 end

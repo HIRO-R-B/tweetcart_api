@@ -275,12 +275,73 @@ module GTK
     end
   end
 
-  class Main
-    module Tweetcart
-      include Math
+  module Primitive
+    module ConversionCapabilities
+      module Tweetcart
+        def self.included(base)
+          base.module_eval do
+            alias_method :s,  :solid
+            alias_method :sp, :sprite
+            alias_method :l,  :label
+            alias_method :li, :line
+            alias_method :bo, :border
+          end
+        end
+      end
+    end
+  end
 
-      def csb(string, size_enum=nil, font='font.ttf')
-        $gtk.calcstringbox(string, size_enum, font)
+  module HashTweetcart
+    def self.included(base)
+      base.class_eval do
+        alias_method :s,  :solid
+        alias_method :sp, :sprite
+        alias_method :l,  :label
+        alias_method :li, :line
+        alias_method :bo, :border
+      end
+    end
+  end
+
+  module Tweetcart
+    include Math
+
+    def csb(string, size_enum=nil, font='font.ttf')
+      $gtk.calcstringbox(string, size_enum, font)
+    end
+
+    def self.setup_monkey_patches args
+      args.class.include                             ::GTK::Args::Tweetcart
+      args.outputs.class.include                     ::GTK::Outputs::Tweetcart
+      args.inputs.class.include                      ::GTK::Inputs::Tweetcart
+      args.inputs.keyboard.class.include             ::GTK::Keyboard::Tweetcart
+      args.inputs.keyboard.key_down.class.include    ::GTK::KeyboardKeys::Tweetcart
+      args.inputs.mouse.class.include                ::GTK::Mouse::Tweetcart
+      args.grid.class.include                        ::GTK::Grid::Tweetcart
+      args.geometry.include                          ::GTK::Geometry::Tweetcart
+      args.geometry.extend                           ::GTK::Geometry::Tweetcart
+      GTK::Primitive::ConversionCapabilities.include ::GTK::Primitive::ConversionCapabilities::Tweetcart
+      Hash.include                                   ::GTK::HashTweetcart
+      $top_level.include                             ::GTK::Tweetcart
+    end
+
+    def self.setup_tweetcart_textures args
+      # setup :p 1 pixel texture
+      args.outputs[:p].w = 1
+      args.outputs[:p].h = 1
+      args.outputs[:p].solids << {x: 0, y: 0, w: 1, h: 1, r: 255, g: 255, b: 255}
+
+      # setup :c 720 diameter circle
+      r = 360
+      d = r * 2
+
+      args.outputs[:c].w = d
+      args.outputs[:c].h = d
+
+      d.times do |i|
+        h = i - r
+        l = Math.sqrt(r * r - h * h)
+        args.outputs[:c].lines << {x: i, y: r - l, x2: i, y2: r + l, r: 255, g: 255, b: 255}
       end
     end
   end

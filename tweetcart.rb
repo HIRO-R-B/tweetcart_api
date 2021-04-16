@@ -9,6 +9,42 @@ module GTK
         self.state
       end
 
+      def i
+        self.inputs
+      end
+
+      def ik
+        self.inputs.keyboard
+      end
+
+      def il
+        self.inputs.left
+      end
+
+      def ir
+        self.inputs.right
+      end
+
+      def iu
+        self.inputs.up
+      end
+
+      def id
+        self.inputs.down
+      end
+
+      def ikd
+        self.inputs.keyboard.key_down
+      end
+
+      def im
+        self.inputs.mouse
+      end
+
+      def imc
+        self.inputs.mouse.click
+      end
+
       def o
         outputs
       end
@@ -73,341 +109,341 @@ module GTK
         self.outputs.psc
       end
 
-      def i
-        self.inputs
-      end
-
-      def ik
-        self.inputs.keyboard
-      end
-
-      def il
-        self.inputs.left
-      end
-
-      def ir
-        self.inputs.right
-      end
-
-      def iu
-        self.inputs.up
-      end
-
-      def id
-        self.inputs.down
-      end
-
-      def ikd
-        self.inputs.keyboard.key_down
-      end
-
-      def im
-        self.inputs.mouse
-      end
-
-      def imc
-        self.inputs.mouse.click
+      def self.aliases
+        [
+          :tc, 'tick_count',
+          :s, 'state',
+          :i, 'inputs',
+          :ik, 'inputs.keyboard',
+          :il, 'inputs.left',
+          :ir, 'inputs.right',
+          :iu, 'inputs.up',
+          :id, 'inputs.down',
+          :ikd, 'inputs.keyboard.key_down',
+          :im, 'inputs.mouse',
+          :imc, 'inputs.mouse.click',
+          :o, 'outputs',
+          :bg=, 'outputs.background_color=',
+          :os, 'outputs.solids',
+          :o_s, 'outputs.static_solids',
+          :osp, 'outputs.sprites',
+          :o_sp, 'outputs.static_sprites',
+          :op, 'outputs.primitives',
+          :o_p, 'outputs.static_primitives',
+          :ol, 'outputs.labels',
+          :o_l, 'outputs.static_labels',
+          :oli, 'outputs.lines',
+          :o_li, 'outputs.static_lines',
+          :ob, 'outputs.borders',
+          :o_b, 'outputs.static_borders',
+          :ops, 'outputs.ps',
+          :opsc, 'outputs.psc',
+        ]
       end
     end
   end
 
-  class Outputs
-    module Tweetcart
-      def ps # Persistent Outputs
-        if @persistence_initialized
-          unless @buffer_swap.new?
-            @buffer_a, @buffer_b = @buffer_b, @buffer_a
-            @buffer[:path] = @buffer_b
-
-            self[@buffer_a].sprites << @buffer
-            self.sprites << @buffer
-
-            @buffer_swap = Kernel.tick_count
-          end
-        else
-          @buffer_a = :persistent_buffer_a
-          @buffer_b = :persistent_buffer_b
-
-          self[@buffer_a]
-          self[@buffer_b]
-
-          @buffer = { w: 1280, h: 720 }.sprite
-          @buffer_swap = Kernel.tick_count
-
-          @persistence_initialized = true
-        end
-
-        self[@buffer_a]
+  tweetcart_included = Module.new do
+    def included(base)
+      tweetcart_aliases = aliases
+      base.class_eval do
+        tweetcart_aliases.each_slice(2) { |new, old| alias_method new, old }
       end
+    end
+  end
 
-      def psc
+  Outputs::Tweetcart = Module.new do
+    extend tweetcart_included
+
+    def ps # Persistent Outputs
+      if @persistence_initialized
+        unless @buffer_swap.new?
+          @buffer_a, @buffer_b = @buffer_b, @buffer_a
+          @buffer[:path] = @buffer_b
+
+          self[@buffer_a].sprites << @buffer
+          self.sprites << @buffer
+
+          @buffer_swap = Kernel.tick_count
+        end
+      else
+        @buffer_a = :persistent_buffer_a
+        @buffer_b = :persistent_buffer_b
+
         self[@buffer_a]
         self[@buffer_b]
 
-        nil
+        @buffer = { w: 1280, h: 720 }.sprite
+        @buffer_swap = Kernel.tick_count
+
+        @persistence_initialized = true
       end
 
-      def self.included(base)
-        base.class_eval do
-          alias_method :s,  :solids
-          alias_method :sp, :sprites
-          alias_method :p,  :primitives
-          alias_method :l,  :labels
-          alias_method :li, :lines
-          alias_method :b,  :borders
-          alias_method :d,  :debug
+      self[@buffer_a]
+    end
 
-          alias_method :_s,  :static_solids
-          alias_method :_sp, :static_sprites
-          alias_method :_p,  :static_primitives
-          alias_method :_l,  :static_labels
-          alias_method :_li, :static_lines
-          alias_method :_b,  :static_borders
-          alias_method :_d,  :static_debug
+    def psc
+      self[@buffer_a]
+      self[@buffer_b]
 
-          alias_method :bg=, :background_color=
-        end
+      nil
+    end
+
+    def self.aliases
+      [
+        :s,   :solids,
+        :sp,  :sprites,
+        :p,   :primitives,
+        :l,   :labels,
+        :li,  :lines,
+        :b,   :borders,
+        :d,   :debug,
+        :_s,  :static_solids,
+        :_sp, :static_sprites,
+        :_p,  :static_primitives,
+        :_l,  :static_labels,
+        :_li, :static_lines,
+        :_b,  :static_borders,
+        :_d,  :static_debug,
+        :bg=, :background_color=
+      ]
+    end
+  end
+
+  Inputs::Tweetcart = Module.new do
+    extend tweetcart_included
+
+    def self.aliases
+      [
+        :u,  :up,
+        :d,  :down,
+        :l,  :left,
+        :r,  :right,
+        :lr, :left_right,
+        :ud, :up_down,
+        :dv, :directional_vector,
+        :t,  :text,
+        :m,  :mouse,
+        :c,  :click,
+        :c1, :controller_one,
+        :c2, :controller_two,
+        :k,  :keyboard
+      ]
+    end
+  end
+
+  Keyboard::Tweetcart = Module.new do
+    extend tweetcart_included
+
+    def self.aliases
+      [
+        :ku, :key_up,
+        :kd, :key_down,
+        :kh, :key_held,
+        :hf, :has_focus,
+        :l,  :left,
+        :u,  :up,
+        :r,  :right,
+        :d,  :down,
+        :k,  :key
+      ]
+    end
+  end
+
+  KeyboardKeys::Tweetcart = Module.new do
+    extend tweetcart_included
+
+    def self.aliases
+      [
+        :lr, :left_right,
+        :ud, :up_down,
+        :tk, :truthy_keys,
+      ]
+    end
+  end
+
+  Mouse::Tweetcart = Module.new do
+    extend tweetcart_included
+
+    def self.aliases
+      [
+        :p,    :point,
+        :inr?, :inside_rect?,
+        :ic?,  :inside_circle?,
+        :ir?,  :intersect_rect?,
+        :c,    :click,
+        :pc,   :previous_click,
+        :m,    :moved,
+        :ma,   :moved_at,
+        :gma,  :global_moved_at,
+        :u,    :up,
+        :d,    :down,
+        :bb,   :button_bits,
+        :bl,   :button_left,
+        :bm,   :button_middle,
+        :br,   :button_right,
+        :bx1,  :button_x1,
+        :bx2,  :button_x2,
+        :w,    :wheel,
+        :hf,   :has_focus
+      ]
+    end
+  end
+
+  Grid::Tweetcart = Module.new do
+    extend tweetcart_included
+
+    def self.aliases
+      [
+        :n,    :name,
+        :b,    :bottom,
+        :t,    :top,
+        :l,    :left,
+        :r,    :right,
+        :re,   :rect,
+        :obl!, :origin_bottom_left!,
+        :oc!,  :origin_center!
+      ]
+    end
+  end
+
+  Geometry::Tweetcart = Module.new do
+    extend tweetcart_included
+
+    def self.aliases
+      [
+        :inr?, :inside_rect?,
+        :ir?,  :intersect_rect?,
+        :sr,   :scale_rect,
+        :agt,  :angle_to,
+        :agf,  :angle_from,
+        :pic?, :point_inside_circle?,
+        :cir,  :center_inside_rect,
+        :cirx, :center_inside_rect_x,
+        :ciry, :center_inside_rect_y,
+        :ar,   :anchor_rect
+      ]
+    end
+
+    def self.aliases_extended
+      [
+        :sl,   :shift_line,
+        :lyi,  :line_y_intercept,
+        :abl,  :angle_between_lines,
+        :ls,   :line_slope,
+        :lrr,  :line_rise_run,
+        :rt,   :ray_test,
+        :lr,   :line_rect,
+        :li,   :line_intersect,
+        :d,    :distance,
+        :cb,   :cubic_bezier
+      ]
+    end
+
+    def self.extended(base)
+      tweetcart_aliases = aliases + aliases_extended
+      tweetcart_aliases -= [:ar, :anchor_rect] # FIXME:: Anchor rect doesn't exist on the Geometry Class atm
+      base.singleton_class.module_eval do
+        tweetcart_aliases.each_slice(2) { |new, old| alias_method new, old }
       end
     end
   end
 
-  class Inputs
-    module Tweetcart
-      def self.included(base)
-        base.class_eval do
-          alias_method :u,  :up
-          alias_method :d,  :down
-          alias_method :l,  :left
-          alias_method :r,  :right
-          alias_method :lr, :left_right
-          alias_method :ud, :up_down
-          alias_method :dv, :directional_vector
-          alias_method :t,  :text
-          alias_method :m,  :mouse
-          alias_method :c,  :click
-          alias_method :c1, :controller_one
-          alias_method :c2, :controller_two
-          alias_method :k,  :keyboard
-        end
-      end
+  Primitive::ConversionCapabilities::Tweetcart = Module.new do
+    extend tweetcart_included
+
+    def self.aliases
+      [
+        :s,  :solid,
+        :sp, :sprite,
+        :l,  :label,
+        :li, :line,
+        :bo, :border
+      ]
     end
   end
 
-  class Keyboard
-    module Tweetcart
-      def self.included(base)
-        base.class_eval do
-          alias_method :ku, :key_up
-          alias_method :kd, :key_down
-          alias_method :kh, :key_held
-          alias_method :hf, :has_focus
-          alias_method :l,  :left
-          alias_method :u,  :up
-          alias_method :r,  :right
-          alias_method :d,  :down
-          alias_method :k,  :key
-        end
-      end
+  ArrayTweetcart = Module.new do
+    extend tweetcart_included
+
+    def self.aliases
+      [
+        :ir?, :intersect_rect?
+      ]
     end
   end
 
-  class KeyboardKeys
-    module Tweetcart
-      def self.included(base)
-        base.class_eval do
-          alias_method :lr, :left_right
-          alias_method :ud, :up_down
-          alias_method :tk, :truthy_keys
-        end
-      end
+  HashTweetcart = Module.new do
+    extend tweetcart_included
+
+    def self.aliases
+      [
+        :s,  :solid,
+        :sp, :sprite,
+        :l,  :label,
+        :li, :line,
+        :bo, :border
+      ]
     end
   end
 
-  class Mouse
-    module Tweetcart
-      def self.included(base)
-        base.class_eval do
-          alias_method :p,    :point
-          alias_method :inr?, :inside_rect?
-          alias_method :ic?,  :inside_circle?
-          alias_method :ir?,  :intersect_rect?
+  NumericTweetcart = Module.new do
+    extend tweetcart_included
 
-          alias_method :c,    :click
-          alias_method :pc,   :previous_click
-
-          alias_method :m,    :moved
-          alias_method :ma,   :moved_at
-          alias_method :gma,  :global_moved_at
-
-          alias_method :u,    :up
-          alias_method :d,    :down
-          alias_method :bb,   :button_bits
-          alias_method :bl,   :button_left
-          alias_method :bm,   :button_middle
-          alias_method :br,   :button_right
-          alias_method :bx1,  :button_x1
-          alias_method :bx2,  :button_x2
-          alias_method :w,    :wheel
-
-          alias_method :hf,   :has_focus
-        end
-      end
+    def self.aliases
+      [
+        :s,   :seconds,
+        :tb,  :to_byte,
+        :cw,  :clamp_wrap,
+        :et,  :elapsed_time,
+        :etp, :elapsed_time_percent,
+        :n?,  :new?,
+        :e?,  :elapsed?,
+        :fi,  :frame_index,
+        :z?,  :zero?,
+        :r,   :randomize,
+        :rs,  :rand_sign,
+        :rr,  :rand_ratio,
+        :rd,  :remainder_of_divide,
+        :ee,  :ease_extended,
+        :ge,  :global_ease,
+        :e,   :ease,
+        :ese, :ease_spline_extended,
+        :es,  :ease_spline,
+        :tr,  :to_radians,
+        :td,  :to_degrees,
+        :ts,  :to_square,
+        :v,   :vector,
+        :vy,  :vector_y,
+        :vx,  :vector_x,
+        :xv,  :x_vector,
+        :yv,  :y_vector,
+        :mz?, :mod_zero?,
+        :zm?, :zmod?,
+        :fd,  :fdiv,
+        :id,  :idiv,
+        :t,   :towards,
+        :mwy, :map_with_ys,
+        :co,  :combinations,
+        :c,   :cap,
+        :cmm, :cap_min_max,
+        :n,   :numbers,
+        :m,   :map,
+        :ea,  :each,
+        :fr,  :from_right,
+        :ft,  :from_top
+      ]
     end
   end
 
-  class Grid
-    module Tweetcart
-      def self.included(base)
-        base.class_eval do
-          alias_method :n,    :name
-          alias_method :b,    :bottom
-          alias_method :t,    :top
-          alias_method :l,    :left
-          alias_method :r,    :right
-          alias_method :re,   :rect
-          alias_method :obl!, :origin_bottom_left!
-          alias_method :oc!,  :origin_center!
-        end
-      end
-    end
-  end
+  FixnumTweetcart = Module.new do
+    extend tweetcart_included
 
-  module Geometry
-    module Tweetcart
-      def self.included(base)
-        base.module_eval do
-          alias_method :inr?, :inside_rect?
-          alias_method :ir?,  :intersect_rect?
-          alias_method :sr,   :scale_rect
-          alias_method :agt,  :angle_to
-          alias_method :agf,  :angle_from
-          alias_method :pic?, :point_inside_circle?
-          alias_method :cir,  :center_inside_rect
-          alias_method :cirx, :center_inside_rect_x
-          alias_method :ciry, :center_inside_rect_y
-          alias_method :ar,   :anchor_rect
-        end
-      end
-
-      def self.extended(base)
-        base.singleton_class.module_eval do
-          alias_method :inr?, :inside_rect?
-          alias_method :ir?,  :intersect_rect?
-          alias_method :sr,   :scale_rect
-          alias_method :agt,  :angle_to
-          alias_method :agf,  :angle_from
-          alias_method :pic?, :point_inside_circle?
-          alias_method :cir,  :center_inside_rect
-          alias_method :cirx, :center_inside_rect_x
-          alias_method :ciry, :center_inside_rect_y
-          # alias_method :ar,   :anchor_rect # FIXME :: Doesn't exist atm
-
-          alias_method :sl,   :shift_line
-          alias_method :lyi,  :line_y_intercept
-          alias_method :abl,  :angle_between_lines
-          alias_method :ls,   :line_slope
-          alias_method :lrr,  :line_rise_run
-          alias_method :rt,   :ray_test
-          alias_method :lr,   :line_rect
-          alias_method :li,   :line_intersect
-          alias_method :d,    :distance
-          alias_method :cb,   :cubic_bezier
-        end
-      end
-    end
-  end
-
-  module Primitive
-    module ConversionCapabilities
-      module Tweetcart
-        def self.included(base)
-          base.module_eval do
-            alias_method :s,  :solid
-            alias_method :sp, :sprite
-            alias_method :l,  :label
-            alias_method :li, :line
-            alias_method :bo, :border
-          end
-        end
-      end
-    end
-  end
-
-  module NumericTweetcart
-    def self.included(base)
-      base.class_eval do
-        alias_method :s,   :seconds
-        alias_method :tb,  :to_byte
-        alias_method :cw,  :clamp_wrap
-        alias_method :et,  :elapsed_time
-        alias_method :etp, :elapsed_time_percent
-        alias_method :n?,  :new?
-        alias_method :e?,  :elapsed?
-        alias_method :fi,  :frame_index
-        alias_method :z?,  :zero?
-        alias_method :r,   :randomize
-        alias_method :rs,  :rand_sign
-        alias_method :rr,  :rand_ratio
-        alias_method :rd,  :remainder_of_divide
-        alias_method :ee,  :ease_extended
-        alias_method :ge,  :global_ease
-        alias_method :e,   :ease
-        alias_method :ese, :ease_spline_extended
-        alias_method :es,  :ease_spline
-        alias_method :tr,  :to_radians
-        alias_method :td,  :to_degrees
-        alias_method :ts,  :to_square
-        alias_method :v,   :vector
-        alias_method :vy,  :vector_y
-        alias_method :vx,  :vector_x
-        alias_method :xv,  :x_vector
-        alias_method :yv,  :y_vector
-        alias_method :mz?, :mod_zero?
-        alias_method :zm?, :zmod?
-        alias_method :fd,  :fdiv
-        alias_method :id,  :idiv
-        alias_method :t,   :towards
-        alias_method :mwy, :map_with_ys
-        alias_method :co,  :combinations
-        alias_method :c,   :cap
-        alias_method :cmm, :cap_min_max
-        alias_method :n,   :numbers
-
-        alias_method :m,   :map
-        alias_method :ea,  :each
-
-        alias_method :fr,  :from_right
-        alias_method :ft,  :from_top
-      end
-    end
-  end
-
-  module FixnumTweetcart
-    def self.included(base)
-      base.class_eval do
-        alias_method :ev?, :even?
-        alias_method :od?, :odd?
-      end
-    end
-  end
-
-  module ArrayTweetcart
-    def self.included(base)
-      base.class_eval do
-        alias_method :ir?, :intersect_rect?
-      end
-    end
-  end
-
-  module HashTweetcart
-    def self.included(base)
-      base.class_eval do
-        alias_method :s,  :solid
-        alias_method :sp, :sprite
-        alias_method :l,  :label
-        alias_method :li, :line
-        alias_method :bo, :border
-      end
+    def self.aliases
+      [
+        :ev?, :even?,
+        :od?, :odd?
+      ]
     end
   end
 

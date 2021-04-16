@@ -1,8 +1,10 @@
 require 'app/tweetcart.rb'
+require 'app/tweetcart_docs.rb'
 
 $gtk.reset
 def tick args
   if Kernel.global_tick_count == 0
+    Kernel.export_docs!
     GTK::Tweetcart.setup args
   end
   t args
@@ -39,7 +41,7 @@ def t a
   a.o_sp<<$b if a.tc<1
   $b.x = 50 + $x
 
-  $c=[50,30,10,10,:p].sprite
+  $c=[50,30,10,10,:p].sp
   a.o_p<<$c
   $c.x = 50 + $x
   a.o_p.clear if a.o_p.count > 50
@@ -58,12 +60,12 @@ def t a
 
   a.o.l << [1280, 720, a.tc, 0, 2]
   a.ol  << [ # key state testing
-    "kd: #{a.ikd.tk}",
-    "kh: #{a.ik.kh.tk}",
-    "ku: #{a.i.k.ku.tk}",
-    "#text: #{a.i.t}"
+             "kd: #{a.ikd.tk}",
+             "kh: #{a.ik.kh.tk}",
+             "ku: #{a.i.k.ku.tk}",
+             "#text: #{a.i.t}"
   ].map_with_index { |s, i| [0, 720 - i*22, s] }
-  # a.os << [a.imc.x, a.imc.y, 100, 100] if a.imc # mouse click
+  a.os << [a.imc.x, a.imc.y, 100, 100] if a.imc # mouse click
   a.os << [a.i.m.p.x, a.i.m.p.y, 20, 20, [a.im.w.y < 0 ? 255 : 0]*3] if a.im.w # mouse wheel
 
   a.osp<<[50,60,10,10,:p]

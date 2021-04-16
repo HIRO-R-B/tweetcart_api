@@ -1,155 +1,153 @@
 module GTK
-  class Args
-    module Tweetcart
-      def tc
-        self.tick_count
-      end
+  module Args::Tweetcart
+    def tc
+      self.tick_count
+    end
 
-      def s
-        self.state
-      end
+    def s
+      self.state
+    end
 
-      def i
-        self.inputs
-      end
+    def i
+      self.inputs
+    end
 
-      def ik
-        self.inputs.keyboard
-      end
+    def ik
+      self.inputs.keyboard
+    end
 
-      def il
-        self.inputs.left
-      end
+    def il
+      self.inputs.left
+    end
 
-      def ir
-        self.inputs.right
-      end
+    def ir
+      self.inputs.right
+    end
 
-      def iu
-        self.inputs.up
-      end
+    def iu
+      self.inputs.up
+    end
 
-      def id
-        self.inputs.down
-      end
+    def id
+      self.inputs.down
+    end
 
-      def ikd
-        self.inputs.keyboard.key_down
-      end
+    def ikd
+      self.inputs.keyboard.key_down
+    end
 
-      def ikh
-        self.inputs.keyboard.key_held
-      end
+    def ikh
+      self.inputs.keyboard.key_held
+    end
 
-      def iku
-        self.inputs.keyboard.key_up
-      end
+    def iku
+      self.inputs.keyboard.key_up
+    end
 
-      def im
-        self.inputs.mouse
-      end
+    def im
+      self.inputs.mouse
+    end
 
-      def imc
-        self.inputs.mouse.click
-      end
+    def imc
+      self.inputs.mouse.click
+    end
 
-      def o
-        self.outputs
-      end
+    def o
+      self.outputs
+    end
 
-      def bg= color
-        self.outputs.background_color= color
-      end
+    def bg= color
+      self.outputs.background_color= color
+    end
 
-      def os
-        self.outputs.solids
-      end
+    def os
+      self.outputs.solids
+    end
 
-      def o_s
-        self.outputs.static_solids
-      end
+    def o_s
+      self.outputs.static_solids
+    end
 
-      def osp
-        self.outputs.sprites
-      end
+    def osp
+      self.outputs.sprites
+    end
 
-      def o_sp
-        self.outputs.static_sprites
-      end
+    def o_sp
+      self.outputs.static_sprites
+    end
 
-      def op
-        self.outputs.primitives
-      end
+    def op
+      self.outputs.primitives
+    end
 
-      def o_p
-        self.outputs.static_primitives
-      end
+    def o_p
+      self.outputs.static_primitives
+    end
 
-      def ol
-        self.outputs.labels
-      end
+    def ol
+      self.outputs.labels
+    end
 
-      def o_l
-        self.outputs.static_labels
-      end
+    def o_l
+      self.outputs.static_labels
+    end
 
-      def oli
-        self.outputs.lines
-      end
+    def oli
+      self.outputs.lines
+    end
 
-      def o_li
-        self.outputs.static_lines
-      end
+    def o_li
+      self.outputs.static_lines
+    end
 
-      def ob
-        self.outputs.borders
-      end
+    def ob
+      self.outputs.borders
+    end
 
-      def o_b
-        self.outputs.static_borders
-      end
+    def o_b
+      self.outputs.static_borders
+    end
 
-      def ops # Persistent Outputs
-        self.outputs.ps
-      end
+    def ops # Persistent Outputs
+      self.outputs.ps
+    end
 
-      def opsc # Persistent Outputs Clear
-        self.outputs.psc
-      end
+    def opsc # Persistent Outputs Clear
+      self.outputs.psc
+    end
 
-      def self.aliases
-        [
-          :tc,   'tick_count',
-          :s,    'state',
-          :i,    'inputs',
-          :ik,   'inputs.keyboard',
-          :il,   'inputs.left',
-          :ir,   'inputs.right',
-          :iu,   'inputs.up',
-          :id,   'inputs.down',
-          :ikd,  'inputs.keyboard.key_down',
-          :ikh,  'inputs.keyboard.key_held',
-          :iku,  'inputs.keyboard.key_up',
-          :im,   'inputs.mouse',
-          :imc,  'inputs.mouse.click',
-          :o,    'outputs',
-          :bg=,  'outputs.background_color=',
-          :os,   'outputs.solids',
-          :o_s,  'outputs.static_solids',
-          :osp,  'outputs.sprites',
-          :o_sp, 'outputs.static_sprites',
-          :op,   'outputs.primitives',
-          :o_p,  'outputs.static_primitives',
-          :ol,   'outputs.labels',
-          :o_l,  'outputs.static_labels',
-          :oli,  'outputs.lines',
-          :o_li, 'outputs.static_lines',
-          :ob,   'outputs.borders',
-          :o_b,  'outputs.static_borders',
-          :ops,  'outputs.ps',
-          :opsc, 'outputs.psc'
-        ]
-      end
+    def self.aliases
+      [
+        :tc,   'tick_count',
+        :s,    'state',
+        :i,    'inputs',
+        :ik,   'inputs.keyboard',
+        :il,   'inputs.left',
+        :ir,   'inputs.right',
+        :iu,   'inputs.up',
+        :id,   'inputs.down',
+        :ikd,  'inputs.keyboard.key_down',
+        :ikh,  'inputs.keyboard.key_held',
+        :iku,  'inputs.keyboard.key_up',
+        :im,   'inputs.mouse',
+        :imc,  'inputs.mouse.click',
+        :o,    'outputs',
+        :bg=,  'outputs.background_color=',
+        :os,   'outputs.solids',
+        :o_s,  'outputs.static_solids',
+        :osp,  'outputs.sprites',
+        :o_sp, 'outputs.static_sprites',
+        :op,   'outputs.primitives',
+        :o_p,  'outputs.static_primitives',
+        :ol,   'outputs.labels',
+        :o_l,  'outputs.static_labels',
+        :oli,  'outputs.lines',
+        :o_li, 'outputs.static_lines',
+        :ob,   'outputs.borders',
+        :o_b,  'outputs.static_borders',
+        :ops,  'outputs.ps',
+        :opsc, 'outputs.psc'
+      ]
     end
   end
 

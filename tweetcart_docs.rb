@@ -11,7 +11,7 @@ module TweetcartDocs
   def docs_class
     <<-S
 * DOCS: ~GTK::Tweetcart~
-~GTK::Tweetcart~ provides short aliases for creating Tweetcarts\n
+~GTK::Tweetcart~ provides short aliases for 'code golf' (making code as short as possible for fun) and creating Tweetcarts (a short program, game or artwork written in 280 characters or less and tweeted).\n
 To make them available, define your ~tick~ method as ~t~
 #+begin_src
   def t a
@@ -74,27 +74,56 @@ S
     base.singleton_class.instance_eval <<-SRC
       define_method(:docs_alias_summary) do
         <<-S
-** Alias Summary
+** Summary
 *** args
+**** Aliases
 #{ format_aliases GTK::Args::Tweetcart.aliases }
 *** args.inputs
+**** Aliases
 #{ format_aliases GTK::Inputs::Tweetcart.aliases }
 **** *.mouse
+**** Aliases
 #{ format_aliases GTK::Mouse::Tweetcart.aliases }
 **** *.keyboard
+**** Aliases
 #{ format_aliases GTK::Keyboard::Tweetcart.aliases }
 *** args.outputs
+**** Aliases
 #{ format_aliases GTK::Outputs::Tweetcart.aliases }
 *** args.geometry
+Geometry methods available on Arrays and Hashes also include these aliases
+**** Aliases
 #{ format_aliases GTK::Geometry::Tweetcart.aliases + GTK::Geometry::Tweetcart.aliases_extended }
 *** Primitive Conversions
+Available on Arrays and Hashes
+**** Aliases
 #{ format_aliases GTK::Primitive::ConversionCapabilities::Tweetcart.aliases }
+*** Enumerable
+**** Aliases
+#{ format_aliases GTK::EnumerableTweetcart.aliases }
 *** Array
-#{ format_aliases GTK::ArrayTweetcart.aliases }
+**** Aliases
+#{ format_aliases GTK::ArrayTweetcart.aliases - GTK::Geometry::Tweetcart.aliases }
 *** Hash
-#{ format_aliases GTK::HashTweetcart.aliases }
+**** Aliases
+#{ format_aliases GTK::HashTweetcart.aliases - GTK::Primitive::ConversionCapabilities::Tweetcart.aliases }
 *** Numerics
+**** ~#r~
+#+begin_src
+  def r
+    rand_ratio.to_i
+  end
+#+end_src
+**** Aliases
 #{ format_aliases GTK::NumericTweetcart.aliases + GTK::FixnumTweetcart.aliases }
+*** Symbol
+**** ~#[]~
+#+begin_src
+  def [] *args, &block
+    -> caller, *rest { caller.send self, *rest, *args, &block }
+  end
+#+end_src
+This allows for syntax like ~[1, 2, 3].map &:add[5]~
 
         S
       end

@@ -75,6 +75,17 @@ S
       define_method(:docs_alias_summary) do
         <<-S
 ** Summary
+*** main
+All methods available to ~Math~ are included into ~main~ and are usable
+#+begin_src
+  def t a
+    puts sin(a.t) # Math.sin(args.tick_count)
+  end
+#+end_src
+**** Aliases
+#+begin_src
+  csb | args.gtk.calcstringbox
+#+end_src
 *** args
 **** Aliases
 #{ format_aliases GTK::Args::Tweetcart.aliases }

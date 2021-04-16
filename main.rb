@@ -13,6 +13,10 @@ end
 def t a
   a.bg=[127]*3
 
+
+  m = a.i.m
+  a.o.ps.sp << [m.x - 25, m.y - 25, 50, 50, :p]
+
   # a.os<<[99,99,1e3,1e3]
   a.osp<<[10,10,10,10,'sprites/square/blue.png']
   a.op<<[20,10,10,10,0,255,0].solid

@@ -37,6 +37,14 @@ module GTK
         self.inputs.keyboard.key_down
       end
 
+      def ikh
+        self.inputs.keyboard.key_held
+      end
+
+      def iku
+        self.inputs.keyboard.key_up
+      end
+
       def im
         self.inputs.mouse
       end
@@ -120,6 +128,8 @@ module GTK
           :iu, 'inputs.up',
           :id, 'inputs.down',
           :ikd, 'inputs.keyboard.key_down',
+          :ikh, 'inputs.keyboard.key_held',
+          :iku, 'inputs.keyboard.key_up',
           :im, 'inputs.mouse',
           :imc, 'inputs.mouse.click',
           :o, 'outputs',

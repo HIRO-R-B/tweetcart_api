@@ -49,7 +49,7 @@ S
     <<-S
 ** Persistent Outputs
 ~GTK::Tweetcart~ provides a "persistent" outputs render target and whatever you draw with it persists to later frames.\n
-You can access it using ~outputs.ps~ and clear it with ~outputs.pscl~
+You can access it using ~outputs.ps~ and clear it with ~outputs.psc~
 #+begin_src
   def t a
     a.bg = [0, 0, 0]
@@ -58,7 +58,7 @@ You can access it using ~outputs.ps~ and clear it with ~outputs.pscl~
     a.o.ps.sp << [m.x - 25, m.y - 25, 50, 50, :p] # a.outputs.ps.sprites
     # Draws white squares to your mouse's location that persist to your screen
 
-    a.o.pscl if m.c # Clear Persistent Outputs if you click the mouse
+    a.o.psc if m.c # Clear Persistent Outputs if you click the mouse
   end
 #+end_src
 S

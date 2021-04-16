@@ -46,7 +46,7 @@ module GTK
       end
 
       def o
-        outputs
+        self.outputs
       end
 
       def bg= color

@@ -1,6 +1,6 @@
 module GTK
   module Args::Tweetcart
-    def tc
+    def t
       self.tick_count
     end
 
@@ -12,44 +12,52 @@ module GTK
       self.inputs
     end
 
-    def ik
+    def it
+      self.inputs.text
+    end
+
+    def k
       self.inputs.keyboard
     end
 
-    def il
+    def l
       self.inputs.left
     end
 
-    def ir
+    def r
       self.inputs.right
     end
 
-    def iu
+    def u
       self.inputs.up
     end
 
-    def id
+    def d
       self.inputs.down
     end
 
-    def ikd
+    def kd
       self.inputs.keyboard.key_down
     end
 
-    def ikh
+    def kh
       self.inputs.keyboard.key_held
     end
 
-    def iku
+    def ku
       self.inputs.keyboard.key_up
     end
 
-    def im
+    def m
       self.inputs.mouse
     end
 
-    def imc
+    def mc
       self.inputs.mouse.click
+    end
+
+    def mw
+      self.inputs.mouse.wheel
     end
 
     def o
@@ -60,93 +68,95 @@ module GTK
       self.outputs.background_color= color
     end
 
-    def os
+    def so
       self.outputs.solids
     end
 
-    def o_s
+    def _so
       self.outputs.static_solids
     end
 
-    def osp
+    def sp
       self.outputs.sprites
     end
 
-    def o_sp
+    def _sp
       self.outputs.static_sprites
     end
 
-    def op
+    def pr
       self.outputs.primitives
     end
 
-    def o_p
+    def _pr
       self.outputs.static_primitives
     end
 
-    def ol
+    def la
       self.outputs.labels
     end
 
-    def o_l
+    def _la
       self.outputs.static_labels
     end
 
-    def oli
+    def li
       self.outputs.lines
     end
 
-    def o_li
+    def _li
       self.outputs.static_lines
     end
 
-    def ob
+    def bo
       self.outputs.borders
     end
 
-    def o_b
+    def _bo
       self.outputs.static_borders
     end
 
-    def ops # Persistent Outputs
-      self.outputs.ps
+    def pe # Persistent Outputs
+      self.outputs.pe
     end
 
-    def opsc # Persistent Outputs Clear
-      self.outputs.psc
+    def pec # Persistent Outputs Clear
+      self.outputs.pec
     end
 
     def self.aliases
       [
-        :tc,   'tick_count',
-        :s,    'state',
-        :i,    'inputs',
-        :ik,   'inputs.keyboard',
-        :il,   'inputs.left',
-        :ir,   'inputs.right',
-        :iu,   'inputs.up',
-        :id,   'inputs.down',
-        :ikd,  'inputs.keyboard.key_down',
-        :ikh,  'inputs.keyboard.key_held',
-        :iku,  'inputs.keyboard.key_up',
-        :im,   'inputs.mouse',
-        :imc,  'inputs.mouse.click',
-        :o,    'outputs',
-        :bg=,  'outputs.background_color=',
-        :os,   'outputs.solids',
-        :o_s,  'outputs.static_solids',
-        :osp,  'outputs.sprites',
-        :o_sp, 'outputs.static_sprites',
-        :op,   'outputs.primitives',
-        :o_p,  'outputs.static_primitives',
-        :ol,   'outputs.labels',
-        :o_l,  'outputs.static_labels',
-        :oli,  'outputs.lines',
-        :o_li, 'outputs.static_lines',
-        :ob,   'outputs.borders',
-        :o_b,  'outputs.static_borders',
-        :ops,  'outputs.ps',
-        :opsc, 'outputs.psc'
+        :t,   'tick_count',
+        :s,   'state',
+        :i,   'inputs',
+        :it,  'inputs.text',
+        :k,   'inputs.keyboard',
+        :l,   'inputs.left',
+        :r,   'inputs.right',
+        :u,   'inputs.up',
+        :d,   'inputs.down',
+        :kd,  'inputs.keyboard.key_down',
+        :kh,  'inputs.keyboard.key_held',
+        :ku,  'inputs.keyboard.key_up',
+        :m,   'inputs.mouse',
+        :mc,  'inputs.mouse.click',
+        :mw,  'inputs.mouse.wheel',
+        :o,   'outputs',
+        :bg=, 'outputs.background_color=',
+        :so,  'outputs.solids',
+        :_so, 'outputs.static_solids',
+        :sp,  'outputs.sprites',
+        :_sp, 'outputs.static_sprites',
+        :pr,  'outputs.primitives',
+        :_pr, 'outputs.static_primitives',
+        :la,  'outputs.labels',
+        :_la, 'outputs.static_labels',
+        :li,  'outputs.lines',
+        :_li, 'outputs.static_lines',
+        :bo,  'outputs.borders',
+        :_bo, 'outputs.static_borders',
+        :pe,  'outputs.pe',
+        :pec, 'outputs.pec'
       ]
     end
   end
@@ -163,7 +173,7 @@ module GTK
   Outputs::Tweetcart = Module.new do
     extend tweetcart_included
 
-    def ps # Persistent Outputs
+    def pe # Persistent Outputs
       if @persistence_initialized
         unless @buffer_swap.new?
           @buffer_a, @buffer_b = @buffer_b, @buffer_a
@@ -190,7 +200,7 @@ module GTK
       self[@buffer_a]
     end
 
-    def psc
+    def pec
       self[@buffer_a]
       self[@buffer_b]
 
@@ -199,21 +209,21 @@ module GTK
 
     def self.aliases
       [
-        :s,   :solids,
+        :so,  :solids,
         :sp,  :sprites,
-        :p,   :primitives,
-        :l,   :labels,
+        :pr,  :primitives,
+        :la,  :labels,
         :li,  :lines,
-        :b,   :borders,
-        :d,   :debug,
-        :_s,  :static_solids,
+        :bo,  :borders,
+        :de,  :debug,
+        :_so, :static_solids,
         :_sp, :static_sprites,
-        :_p,  :static_primitives,
-        :_l,  :static_labels,
+        :_pr, :static_primitives,
+        :_la, :static_labels,
         :_li, :static_lines,
-        :_b,  :static_borders,
-        :_d,  :static_debug,
-        :bg=, :background_color=
+        :_bo, :static_borders,
+        :_de, :static_debug,
+        :bg=, :background_color=,
       ]
     end
   end
@@ -323,8 +333,8 @@ module GTK
         :inr?, :inside_rect?,
         :ir?,  :intersect_rect?,
         :sr,   :scale_rect,
-        :agt,  :angle_to,
-        :agf,  :angle_from,
+        :ant,  :angle_to,
+        :anf,  :angle_from,
         :pic?, :point_inside_circle?,
         :cir,  :center_inside_rect,
         :cirx, :center_inside_rect_x,
@@ -335,16 +345,16 @@ module GTK
 
     def self.aliases_extended
       [
-        :sl,   :shift_line,
-        :lyi,  :line_y_intercept,
-        :abl,  :angle_between_lines,
-        :ls,   :line_slope,
-        :lrr,  :line_rise_run,
-        :rt,   :ray_test,
-        :lr,   :line_rect,
-        :li,   :line_intersect,
-        :d,    :distance,
-        :cb,   :cubic_bezier
+        :sl,  :shift_line,
+        :lyi, :line_y_intercept,
+        :abl, :angle_between_lines,
+        :ls,  :line_slope,
+        :lrr, :line_rise_run,
+        :rt,  :ray_test,
+        :lr,  :line_rect,
+        :li,  :line_intersect,
+        :d,   :distance,
+        :cb,  :cubic_bezier
       ]
     end
 
@@ -362,11 +372,70 @@ module GTK
 
     def self.aliases
       [
-        :s,  :solid,
+        :so, :solid,
         :sp, :sprite,
-        :l,  :label,
+        :la, :label,
         :li, :line,
         :bo, :border
+      ]
+    end
+  end
+
+  ObjectTweetcart = Module.new do
+    extend tweetcart_included
+
+    def self.aliases
+      [
+        :dsm, :define_singleton_method
+      ]
+    end
+  end
+
+  ModuleTweetcart = Module.new do
+    extend tweetcart_included
+
+    def self.aliases
+      [
+        :dm, :define_method,
+      ]
+    end
+  end
+
+  EnumerableTweetcart = Module.new do
+    extend tweetcart_included
+
+    def self.aliases
+      [
+        :cy,  :cycle,
+        :dw,  :drop_while,
+        :ec,  :each_cons,
+        :es,  :each_slice,
+        :ewi, :each_with_index,
+        :ewo, :each_with_object,
+        :en,  :entries,
+        :fa,  :find_all,
+        :fi,  :find_index,
+        :f,   :first,
+        :fm,  :flat_map,
+        :gb,  :group_by,
+        :i?,  :include?,
+        :m,   :map,
+        :m?,  :member?,
+        :mx,  :max,
+        :mxb, :max_by,
+        :mn,  :min,
+        :mnb, :min_by,
+        :mm,  :minmax,
+        :mmb, :minmax_by,
+        :n?,  :none?,
+        :o?,  :one?,
+        :pa,  :partition,
+        :rd,  :reduce,
+        :rj,  :reject,
+        :rve, :reverse_each,
+        :se,  :select,
+        :stb, :sort_by,
+        :tw,  :take_while
       ]
     end
   end
@@ -376,7 +445,62 @@ module GTK
 
     def self.aliases
       [
-        :ir?, :intersect_rect?
+        :an,   :angle,
+        :an=,  :angle=,
+        :ant,  :angle_to,
+        :anf,  :angle_from,
+        :agp,  :angle_given_point,
+        :air?, :any_intersect_rect?,
+        :ap,   :append,
+        :cir,  :center_inside_rect,
+        :c,    :clear,
+        :cl,   :clone,
+        :co,   :combination,
+        :cp,   :compact,
+        :cp!,  :compact!,
+        :d,    :delete,
+        :da,   :delete_at,
+        :di,   :delete_if,
+        :e,    :each,
+        :ei,   :each_index,
+        :e?,   :empty?,
+        :fe,   :fetch,
+        :fl,   :flatten,
+        :fl!,  :flatten!,
+        :ir?,  :intersect_rect?,
+        :j,    :join,
+        :ki,   :keep_if,
+        :l,    :length,
+        :m!,   :map!,
+        :mwi,  :map_with_index,
+        :pe,   :permutation,
+        :pr,   :product,
+        :re,   :rect,
+        :rs,   :rect_shift,
+        :rj!,  :reject!,
+        :rjf,  :reject_false,
+        :rjy,  :reject_falsey,
+        :rjn,  :reject_nil,
+        :rp,   :replace,
+        :rv,   :reverse,
+        :rv!,  :reverse!,
+        :ro,   :rotate,
+        :ro!,  :rotate!,
+        :sa,   :sample,
+        :sr,   :scale_rect,
+        :sre,  :scale_rect_extended,
+        :se!,  :select!,
+        :st,   :shift,
+        :str,  :shift_rect,
+        :sh,   :shuffle,
+        :sh!,  :shuffle!,
+        :sl,   :slice,
+        :sl!,  :slice!,
+        :s,    :sort,
+        :s!,   :sort!,
+        :tr,   :transpose,
+        :ust,  :unshift,
+        :va,   :values_at
       ]
     end
   end
@@ -386,17 +510,77 @@ module GTK
 
     def self.aliases
       [
-        :s,  :solid,
-        :sp, :sprite,
-        :l,  :label,
-        :li, :line,
-        :bo, :border
+        :so,   :solid,
+        :sp,   :sprite,
+        :la,   :label,
+        :li,   :line,
+        :bo,   :border,
+
+        :sen,  :size_enum,
+        :sen=, :size_enum=,
+        :aen,  :alignment_enum,
+        :aen=, :alignment_enum=,
+        :an,   :angle,
+        :an=,  :angle=,
+        :aax,  :angle_anchor_x,
+        :aax=, :angle_anchor_x=,
+        :aay,  :angle_anchor_y,
+        :aay=, :angle_anchor_y=,
+        :agp,  :angle_given_point,
+        :fh,   :flip_horizontally,
+        :fh=,  :flip_horizontally=,
+        :fv,   :flip_vertically,
+        :fv=,  :flip_vertically=,
+        :sx,   :source_x,
+        :sx=,  :source_x=,
+        :sy,   :source_y,
+        :sy=,  :source_y=,
+        :sw,   :source_w,
+        :sw=,  :source_w=,
+        :sh,   :source_h,
+        :sh=,  :source_h=,
+
+        :c,    :clear,
+        :cl,   :clone,
+        :co,   :compact,
+        :co!,  :compact!,
+        :df,   :default,
+        :df=,  :default=,
+        :dp,   :default_proc,
+        :dp=,  :default_proc=,
+        :d,    :delete,
+        :di,   :delete_if,
+        :dt,   :detect,
+        :e,    :each,
+        :e?,   :empty?,
+        :ev,   :each_value,
+        :fe,   :fetch,
+        :fev,  :fetch_values,
+        :fl,   :flatten,
+        :hk?,  :has_key?,
+        :hv?,  :has_value?,
+        :ki,   :keep_if,
+        :l,    :length,
+        :me,   :merge,
+        :me!,  :merge!,
+        :rj!,  :reject!,
+        :rp,   :replace,
+        :sre,  :scale_rect_extended,
+        :se!,  :select!,
+        :st,   :shift,
+        :str,  :shift_rect,
+        :sl,   :slice,
+        :s,    :sort,
       ]
     end
   end
 
   NumericTweetcart = Module.new do
     extend tweetcart_included
+
+    def r
+      rand_ratio.to_i
+    end
 
     def self.aliases
       [
@@ -409,13 +593,12 @@ module GTK
         :e?,  :elapsed?,
         :fi,  :frame_index,
         :z?,  :zero?,
-        :r,   :randomize,
         :rs,  :rand_sign,
         :rr,  :rand_ratio,
         :rd,  :remainder_of_divide,
+        :ea,  :ease,
         :ee,  :ease_extended,
         :ge,  :global_ease,
-        :e,   :ease,
         :ese, :ease_spline_extended,
         :es,  :ease_spline,
         :tr,  :to_radians,
@@ -437,7 +620,7 @@ module GTK
         :cmm, :cap_min_max,
         :n,   :numbers,
         :m,   :map,
-        :ea,  :each,
+        :e,   :each,
         :fr,  :from_right,
         :ft,  :from_top
       ]
@@ -452,6 +635,12 @@ module GTK
         :ev?, :even?,
         :od?, :odd?
       ]
+    end
+  end
+
+  SymbolTweetcart = Module.new do
+    def [] *args, &block
+      -> caller, *rest { caller.send self, *rest, *args, &block }
     end
   end
 
@@ -473,9 +662,14 @@ module GTK
       args.geometry.include                          ::GTK::Geometry::Tweetcart
       args.geometry.extend                           ::GTK::Geometry::Tweetcart
       GTK::Primitive::ConversionCapabilities.include ::GTK::Primitive::ConversionCapabilities::Tweetcart
+      Object.include                                 ::GTK::ObjectTweetcart
+      Module.include                                 ::GTK::ModuleTweetcart
+      Enumerable.include                             ::GTK::EnumerableTweetcart
       Array.include                                  ::GTK::ArrayTweetcart
       Hash.include                                   ::GTK::HashTweetcart
       Numeric.include                                ::GTK::NumericTweetcart
+      Fixnum.include                                 ::GTK::FixnumTweetcart
+      Symbol.include                                 ::GTK::SymbolTweetcart
       $top_level.include                             ::GTK::Tweetcart
     end
 

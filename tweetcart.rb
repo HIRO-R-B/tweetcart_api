@@ -634,7 +634,7 @@ module GTK
         :zm?, :zmod?,
         :fd,  :fdiv,
         :d,   :idiv,
-        :t,   :towards,
+        :to,  :towards,
         :mwy, :map_with_ys,
         :co,  :combinations,
         :c,   :cap,
@@ -653,6 +653,7 @@ module GTK
 
     def self.aliases
       [
+        :t,   :times,
         :ev?, :even?,
         :od?, :odd?
       ]

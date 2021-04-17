@@ -10,6 +10,7 @@ def tick args
   t args
 end
 
+=begin
 def t a
   a.bg=[127]*3
 
@@ -96,3 +97,6 @@ def t a
     $circle[9]=255.r
   end
 end
+=end
+
+def t a;A||=a.o[S=:b].sp<<[F=79,F,P=140,P,:c,0,D=410,[F]*3];a.sp<<[[320,B=[G=200,20,G,S],97],[440,B,-F],[H=360,P,4*H,720,S],[345,220,896,504,S],[H,300,V=[256,H,S,15]],[D,310,V],[D,G,V],[450,175,V],[570,135,V[0,3],-15],P.t.m{|i|[550,345,atan(Z=a.t.d(5))*i,Z.sin*i,S,a.t.cos*i]}]end

@@ -60,6 +60,18 @@ module GTK
       self.inputs.mouse.wheel
     end
 
+    def ml
+      self.inputs.mouse.button_left
+    end
+
+    def mm
+      self.inputs.mouse.button_middle
+    end
+
+    def mr
+      self.inputs.mouse.button_right
+    end
+
     def o
       self.outputs
     end
@@ -141,6 +153,9 @@ module GTK
         :m,   'inputs.mouse',
         :mc,  'inputs.mouse.click',
         :mw,  'inputs.mouse.wheel',
+        :ml,  'inputs.mouse.button_left',
+        :mm,  'inputs.mouse.button_middle',
+        :mr,  'inputs.mouse.button_right',
         :o,   'outputs',
         :bg=, 'outputs.background_color=',
         :so,  'outputs.solids',
@@ -296,12 +311,12 @@ module GTK
         :gma,  :global_moved_at,
         :u,    :up,
         :d,    :down,
-        :bb,   :button_bits,
-        :bl,   :button_left,
-        :bm,   :button_middle,
-        :br,   :button_right,
-        :bx1,  :button_x1,
-        :bx2,  :button_x2,
+        :b,    :button_bits,
+        :l,    :button_left,
+        :m,    :button_middle,
+        :r,    :button_right,
+        :x1,   :button_x1,
+        :x2,   :button_x2,
         :w,    :wheel,
         :hf,   :has_focus
       ]

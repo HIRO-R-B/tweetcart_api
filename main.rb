@@ -75,13 +75,13 @@ def t a
     end
   end
 
-  if a.m.br # While button right
+  if a.m.r # While button right
     a.s.rgb.m! &:add[5]
     a.s.rgb.m! &:cw[0,255]
   end
 
   a.o.pe.sp << [m.x - 5, m.y - 5, 10, 10, :p, 0, 255, a.s.rgb]
-  a.pec if a.m.c && a.m.bl # clear persistence on left click
+  a.pec if a.m.c && a.m.l # clear persistence on left click
 
   a.sp<<[50,60,10,10,:p]
   $circle||=[60,60,100,100,:c,0,255,255,0,255]

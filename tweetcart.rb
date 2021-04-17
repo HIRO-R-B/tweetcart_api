@@ -582,8 +582,14 @@ module GTK
       rand_ratio.to_i
     end
 
+    def dm(x)
+      divmod(x)
+    end
+
     def self.aliases
       [
+        :a,   :abs,
+
         :s,   :seconds,
         :tb,  :to_byte,
         :cw,  :clamp_wrap,
@@ -612,7 +618,7 @@ module GTK
         :mz?, :mod_zero?,
         :zm?, :zmod?,
         :fd,  :fdiv,
-        :id,  :idiv,
+        :d,   :idiv,
         :t,   :towards,
         :mwy, :map_with_ys,
         :co,  :combinations,
@@ -649,6 +655,17 @@ module GTK
 
     def csb(string, size_enum=nil, font='font.ttf')
       $gtk.calcstringbox(string, size_enum, font)
+    end
+
+    def sum(*args)
+      $gtk.args.fn.+(*args)
+    end
+
+    def self.aliases
+      [
+        :csb, 'args.gtk.calcstringbox',
+        :sum, 'args.fn.+',
+      ]
     end
 
     def self.setup_monkey_patches args

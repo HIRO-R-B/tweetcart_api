@@ -83,9 +83,7 @@ All methods available to ~Math~ are included into ~main~ and are usable
   end
 #+end_src
 **** Aliases
-#+begin_src
-  csb | args.gtk.calcstringbox
-#+end_src
+#{ format_aliases GTK::Tweetcart.aliases }
 *** args
 **** Aliases
 #{ format_aliases GTK::Args::Tweetcart.aliases }
@@ -123,6 +121,12 @@ Available on Arrays and Hashes
 #+begin_src
   def r
     rand_ratio.to_i
+  end
+#+end_src
+**** ~#dm~
+#+begin_src
+  def dm x
+    divmod x
   end
 #+end_src
 **** Aliases

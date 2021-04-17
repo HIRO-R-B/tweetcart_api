@@ -8,6 +8,8 @@ module TweetcartDocs
       :docs_summary,
       :docs_args,
       :docs_inputs,
+      :docs_keyboard,
+      :docs_mouse,
       :docs_outputs,
       :docs_geometry,
       :docs_primitive_conversions,
@@ -15,7 +17,9 @@ module TweetcartDocs
       :docs_array,
       :docs_hash,
       :docs_numerics,
-      :docs_symbol
+      :docs_symbol,
+      :docs_module,
+      :docs_object
     ]
   end
 
@@ -209,6 +213,21 @@ S
   end
 #+end_src
 This allows for syntax like ~[1, 2, 3].map &:add[5]~
+
+S
+  end
+
+  def docs_module
+    <<-S
+*** Module
+#{ TweetcartDocs.format_aliases GTK::ModuleTweetcart.aliases }
+S
+  end
+
+  def docs_object
+    <<-S
+*** Object
+#{ TweetcartDocs.format_aliases GTK::ObjectTweetcart.aliases }
 
 S
   end

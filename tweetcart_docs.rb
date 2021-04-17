@@ -2,9 +2,20 @@ module TweetcartDocs
   def docs_method_sort_order
     [
       :docs_class,
-      :docs_render_targets,
+      :docs_built_in_render_targets,
       :docs_persistent_outputs,
-      :docs_alias_summary
+      :docs_math,
+      :docs_summary,
+      :docs_args,
+      :docs_inputs,
+      :docs_outputs,
+      :docs_geometry,
+      :docs_primitive_conversions,
+      :docs_enumerable,
+      :docs_array,
+      :docs_hash,
+      :docs_numerics,
+      :docs_symbol
     ]
   end
 
@@ -12,7 +23,7 @@ module TweetcartDocs
     <<-S
 * DOCS: ~GTK::Tweetcart~
 ~GTK::Tweetcart~ provides short aliases for 'code golf' (making code as short as possible for fun) and creating Tweetcarts (a short program, game or artwork written in 280 characters or less and tweeted).\n
-To make them available, define your ~tick~ method as ~t~
+To make Tweetcart mode available, define your ~tick~ method as ~t~
 #+begin_src
   def t a
     m = a.i.m                   # args.inputs.mouse
@@ -23,7 +34,7 @@ To make them available, define your ~tick~ method as ~t~
 S
   end
 
-  def docs_render_targets
+  def docs_built_in_render_targets
     <<-S
 ** Built-In Render Targets
 ~GTK::Tweetcart~ provides built-in circle and 1x1 pixel render targets, which you can access with ~:c~ and ~:p~ respectively.
@@ -64,58 +75,112 @@ You can access it using ~outputs.ps~ and clear it with ~outputs.psc~
 S
   end
 
-  def self.format_aliases aliases
-    max_length = aliases.each_slice(2).map { |new, _| new.length }.max
-    out = aliases.each_slice(2).map { |new, old| "  #{new}#{' ' * (max_length - new.length)} | #{old}" }.join("\n")
-    "#+begin_src\n#{out}\n#+end_src"
-  end
-
-  def self.extended(base)
-    base.singleton_class.instance_eval <<-SRC
-      define_method(:docs_alias_summary) do
-        <<-S
-** Summary
-*** main
+  def docs_math
+    <<-S
+** Math
 All methods available to ~Math~ are included into ~main~ and are usable
 #+begin_src
   def t a
     puts sin(a.t) # Math.sin(args.tick_count)
   end
 #+end_src
-**** Aliases
-#{ format_aliases GTK::Tweetcart.aliases }
+
+S
+  end
+
+  def docs_summary
+    <<-S
+** Summary
+*** main
+#{ TweetcartDocs.format_aliases GTK::Tweetcart.aliases }
+
+S
+  end
+
+  def docs_args
+    <<-S
 *** args
-**** Aliases
-#{ format_aliases GTK::Args::Tweetcart.aliases }
+#{ TweetcartDocs.format_aliases GTK::Args::Tweetcart.aliases }
+
+S
+  end
+
+  def docs_inputs
+    <<-S
 *** args.inputs
-**** Aliases
-#{ format_aliases GTK::Inputs::Tweetcart.aliases }
+#{ TweetcartDocs.format_aliases GTK::Inputs::Tweetcart.aliases }
+
+S
+  end
+
+  def docs_mouse
+    <<-S
 **** *.mouse
-**** Aliases
-#{ format_aliases GTK::Mouse::Tweetcart.aliases }
+#{ TweetcartDocs.format_aliases GTK::Mouse::Tweetcart.aliases }
+
+S
+  end
+
+  def docs_keyboard
+    <<-S
 **** *.keyboard
-**** Aliases
-#{ format_aliases GTK::Keyboard::Tweetcart.aliases }
+#{ TweetcartDocs.format_aliases GTK::Keyboard::Tweetcart.aliases }
+
+S
+  end
+
+  def docs_outputs
+    <<-S
 *** args.outputs
-**** Aliases
-#{ format_aliases GTK::Outputs::Tweetcart.aliases }
+#{ TweetcartDocs.format_aliases GTK::Outputs::Tweetcart.aliases }
+
+S
+  end
+
+  def docs_geometry
+    <<-S
 *** args.geometry
 Geometry methods available on Arrays and Hashes also include these aliases
-**** Aliases
-#{ format_aliases GTK::Geometry::Tweetcart.aliases + GTK::Geometry::Tweetcart.aliases_extended }
+#{ TweetcartDocs.format_aliases GTK::Geometry::Tweetcart.aliases + GTK::Geometry::Tweetcart.aliases_extended }
+
+S
+  end
+
+  def docs_primitive_conversions
+    <<-S
 *** Primitive Conversions
 Available on Arrays and Hashes
-**** Aliases
-#{ format_aliases GTK::Primitive::ConversionCapabilities::Tweetcart.aliases }
+#{ TweetcartDocs.format_aliases GTK::Primitive::ConversionCapabilities::Tweetcart.aliases }
+
+S
+  end
+
+  def docs_enumerable
+    <<-S
 *** Enumerable
-**** Aliases
-#{ format_aliases GTK::EnumerableTweetcart.aliases }
+#{ TweetcartDocs.format_aliases GTK::EnumerableTweetcart.aliases }
+
+S
+  end
+
+  def docs_array
+    <<-S
 *** Array
-**** Aliases
-#{ format_aliases GTK::ArrayTweetcart.aliases - GTK::Geometry::Tweetcart.aliases }
+#{ TweetcartDocs.format_aliases GTK::ArrayTweetcart.aliases - GTK::Geometry::Tweetcart.aliases }
+
+S
+  end
+
+  def docs_hash
+    <<-S
 *** Hash
-**** Aliases
-#{ format_aliases GTK::HashTweetcart.aliases - GTK::Primitive::ConversionCapabilities::Tweetcart.aliases }
+#{ TweetcartDocs.format_aliases GTK::HashTweetcart.aliases - GTK::Primitive::ConversionCapabilities::Tweetcart.aliases }
+
+S
+  end
+
+  def docs_numerics
+    <<-S
 *** Numerics
 **** ~#r~
 #+begin_src
@@ -129,8 +194,13 @@ Available on Arrays and Hashes
     divmod x
   end
 #+end_src
-**** Aliases
-#{ format_aliases GTK::NumericTweetcart.aliases + GTK::FixnumTweetcart.aliases }
+#{ TweetcartDocs.format_aliases GTK::NumericTweetcart.aliases + GTK::FixnumTweetcart.aliases }
+
+S
+  end
+
+  def docs_symbol
+    <<-S
 *** Symbol
 **** ~#[]~
 #+begin_src
@@ -140,9 +210,13 @@ Available on Arrays and Hashes
 #+end_src
 This allows for syntax like ~[1, 2, 3].map &:add[5]~
 
-        S
-      end
-SRC
+S
+  end
+
+  def self.format_aliases aliases
+    max_length = aliases.each_slice(2).map { |new, _| new.length }.max
+    out = aliases.each_slice(2).map { |new, old| "  #{new}#{' ' * (max_length - new.length)} | #{old}" }.join("\n")
+    "**** Aliases\n#+begin_src\n#{out}\n#+end_src"
   end
 end
 

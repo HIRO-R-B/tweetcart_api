@@ -128,12 +128,12 @@ module GTK
       self.outputs.static_borders
     end
 
-    def pe # Persistent Outputs
-      self.outputs.pe
+    def p # Persistent Outputs
+      self.outputs.p
     end
 
-    def pec # Persistent Outputs Clear
-      self.outputs.pec
+    def pc # Persistent Outputs Clear
+      self.outputs.pc
     end
 
     def self.aliases
@@ -170,8 +170,8 @@ module GTK
         :_li, 'outputs.static_lines',
         :bo,  'outputs.borders',
         :_bo, 'outputs.static_borders',
-        :pe,  'outputs.pe',
-        :pec, 'outputs.pec'
+        :p,   'outputs.p',
+        :pc,  'outputs.pc'
       ]
     end
   end
@@ -188,7 +188,7 @@ module GTK
   Outputs::Tweetcart = Module.new do
     extend tweetcart_included
 
-    def pe # Persistent Outputs
+    def p # Persistent Outputs
       if @persistence_initialized
         unless @buffer_swap.new?
           @buffer_a, @buffer_b = @buffer_b, @buffer_a
@@ -215,7 +215,7 @@ module GTK
       self[@buffer_a]
     end
 
-    def pec
+    def pc
       self[@buffer_a]
       self[@buffer_b]
 
@@ -398,6 +398,82 @@ module GTK
 
   ObjectTweetcart = Module.new do
     extend tweetcart_included
+
+    def H *opts
+      Hash.new *opts
+    end
+
+    def SO! *opts
+      $args.outputs.solids << opts
+    end
+
+    def SP! *opts
+      $args.outputs.sprites << opts
+    end
+
+    def PR! *opts
+      $args.outputs.primitives << opts
+    end
+
+    def LA! *opts
+      $args.outputs.labels << opts
+    end
+
+    def LI! *opts
+      $args.outputs.labels << opts
+    end
+
+    def BO! *opts
+      $args.outputs.borders << opts
+    end
+
+    def _SO! *opts
+      $args.outputs.solids << opts
+    end
+
+    def _SP! *opts
+      $args.outputs.sprites << opts
+    end
+
+    def _LA! *opts
+      $args.outputs.labels << opts
+    end
+
+    def _LI! *opts
+      $args.outputs.labels << opts
+    end
+
+    def _BO! *opts
+      $args.outputs.borders << opts
+    end
+
+    def PSO! *opts
+      $args.outputs.p.solids << opts
+    end
+
+    def PSP! *opts
+      $args.outputs.p.sprites << opts
+    end
+
+    def PPR! *opts
+      $args.outputs.p.primitives << opts
+    end
+
+    def PLA! *opts
+      $args.outputs.p.labels << opts
+    end
+
+    def PLI! *opts
+      $args.outputs.p.lines << opts
+    end
+
+    def PBO! *opts
+      $args.outputs.p.borders << opts
+    end
+
+    def PC!
+      $args.outputs.pc
+    end
 
     def self.aliases
       [
@@ -675,6 +751,10 @@ module GTK
 
     def sum(*args)
       $gtk.args.fn.+(*args)
+    end
+
+    def C(x, y, radius, r = nil, g = nil, b = nil, a = nil)
+      [radius.to_square(x, y), :c, 0, a, r, g, b].sprite
     end
 
     def self.aliases

@@ -704,27 +704,27 @@ module GTK
     end
 
     def _SO! *opts
-      $args.outputs.solids << opts
+      $args.outputs.static_solids << opts
     end
 
     def _SP! *opts
-      $args.outputs.sprites << opts
+      $args.outputs.static_sprites << opts
     end
 
     def _PR! *opts
-      $args.outputs.primitives << opts
+      $args.outputs.static_primitives << opts
     end
 
     def _LA! *opts
-      $args.outputs.labels << opts
+      $args.outputs.static_labels << opts
     end
 
     def _LI! *opts
-      $args.outputs.labels << opts
+      $args.outputs.static_labels << opts
     end
 
     def _BO! *opts
-      $args.outputs.borders << opts
+      $args.outputs.static_borders << opts
     end
 
     def PSO! *opts
@@ -766,14 +766,8 @@ module GTK
     include Math
 
     F = 255
-
-    def W
-      $args.grid.w
-    end
-
-    def H
-      $args.grid.h
-    end
+    W = $args.grid.w
+    H = $args.grid.h
 
     def CI(x, y, radius, r = 0, g = 0, b = 0, a = 255)
       [radius.to_square(x, y), :c, 0, a, r, g, b].sprite

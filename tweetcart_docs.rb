@@ -99,7 +99,11 @@ S
 
 **** CONSTANTS
 #+begin_src
-  F | 255
+  F  | 255
+  W  | args.grid.w
+  H  | args.grid.h
+  PI | Math::PI
+  E  | Math::E
 #+end_src
 
 **** ~#CI~

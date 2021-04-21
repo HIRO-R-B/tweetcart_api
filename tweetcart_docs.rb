@@ -70,10 +70,10 @@ You can access it using ~outputs.ps~ and clear it with ~outputs.psc~
     a.bg = [0, 0, 0]
 
     m = a.i.m
-    a.o.ps.sp << [m.x - 25, m.y - 25, 50, 50, :p] # a.outputs.ps.sprites
+    a.o.p.sp << [m.x - 25, m.y - 25, 50, 50, :p] # a.outputs.p.sprites
     # Draws white squares to your mouse's location that persist to your screen
 
-    a.o.psc if m.c # Clear Persistent Outputs if you click the mouse
+    a.o.pc if m.c # Clear Persistent Outputs if you click the mouse
   end
 #+end_src
 S
@@ -96,6 +96,18 @@ S
     <<-S
 ** Summary
 *** main
+
+**** CONSTANTS
+#+begin_src
+  F | 255
+#+end_src
+
+**** ~#C~
+#+begin_src
+  def C(x, y, radius, r = nil, g = nil, b = nil, a = nil)
+    [radius.to_square(x, y), :c, 0, a, r, g, b].sprite
+  end
+#+end_src
 #{ TweetcartDocs.format_aliases GTK::Tweetcart.aliases }
 
 S
@@ -227,6 +239,39 @@ S
   def docs_object
     <<-S
 *** Object
+
+**** ~#H~
+#+begin_src
+  def H *opts
+    Hash.new *opts
+  end
+#+end_src
+
+**** ~#(SO! | SP! | PR! | LA! | LI! | BO!) *opts~
+Aliases for pushing into outputs
+#+begin_src
+  def t a
+    SO! [0, 0, 10, 10], [100, 100, 200, 200]
+    # a.so << [[0, 0, 10, 10], [100, 100, 200, 200]]
+  end
+#+end_src
+
+**** ~#(_SO! | _SP! | _PR! | _LA! | _LI! | _BO!) *opts~
+Static outputs variants
+
+**** ~#(PSO! | PSP! | PPR! | PLA! | PLI! | PBO!) *opts~
+Persistent outputs variants
+
+**** ~#PC!~
+Persistence Clear
+#+begin_src
+  def t a
+    a.bg = [0, 0, 0]
+
+    PSP! [1280.r, 720.r, 100, 100, :p, 360.r, 255, 255.r, 255.r, 255.r] # It's a squarepocolypse!
+    PC! if a.mc # Clears them all
+  end
+#+end_src
 #{ TweetcartDocs.format_aliases GTK::ObjectTweetcart.aliases }
 
 S

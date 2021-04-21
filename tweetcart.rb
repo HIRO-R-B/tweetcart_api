@@ -128,12 +128,22 @@ module GTK
       self.outputs.static_borders
     end
 
-    def p # Persistent Outputs
+    # Persistent Outputs
+    def p 
       self.outputs.p
     end
 
-    def pc # Persistent Outputs Clear
+    # Persistent Outputs Clear
+    def pc
       self.outputs.pc
+    end
+
+    def w
+      self.grid.w
+    end
+
+    def h
+      self.grid.h
     end
 
     def self.aliases
@@ -171,7 +181,9 @@ module GTK
         :bo,  'outputs.borders',
         :_bo, 'outputs.static_borders',
         :p,   'outputs.p',
-        :pc,  'outputs.pc'
+        :pc,  'outputs.pc',
+        :w,   'grid.width',
+        :h,   'grid.height',
       ]
     end
   end
@@ -433,6 +445,10 @@ module GTK
 
     def _SP! *opts
       $args.outputs.sprites << opts
+    end
+
+    def _PR! *opts
+      $args.outputs.primitives << opts
     end
 
     def _LA! *opts
@@ -745,16 +761,18 @@ module GTK
   module Tweetcart
     include Math
 
+    F = 255
+
+    def C(x, y, radius, r = nil, g = nil, b = nil, a = nil)
+      [radius.to_square(x, y), :c, 0, a, r, g, b].sprite
+    end
+
     def csb(string, size_enum=nil, font='font.ttf')
       $gtk.calcstringbox(string, size_enum, font)
     end
 
     def sum(*args)
       $gtk.args.fn.+(*args)
-    end
-
-    def C(x, y, radius, r = nil, g = nil, b = nil, a = nil)
-      [radius.to_square(x, y), :c, 0, a, r, g, b].sprite
     end
 
     def self.aliases

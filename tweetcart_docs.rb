@@ -102,9 +102,9 @@ S
   F | 255
 #+end_src
 
-**** ~#C~
+**** ~#CI~
 #+begin_src
-  def C(x, y, radius, r = nil, g = nil, b = nil, a = nil)
+  def CI(x, y, radius, r = 0, g = 0, b = 0, a = 255)
     [radius.to_square(x, y), :c, 0, a, r, g, b].sprite
   end
 #+end_src
@@ -239,13 +239,6 @@ S
   def docs_object
     <<-S
 *** Object
-
-**** ~#H~
-#+begin_src
-  def H *opts
-    Hash.new *opts
-  end
-#+end_src
 
 **** ~#(SO! | SP! | PR! | LA! | LI! | BO!) *opts~
 Aliases for pushing into outputs

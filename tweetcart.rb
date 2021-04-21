@@ -52,6 +52,14 @@ module GTK
       self.inputs.mouse
     end
 
+    def mx
+      self.inputs.mouse.x
+    end
+
+    def my
+      self.inputs.mouse.y
+    end
+
     def mc
       self.inputs.mouse.click
     end
@@ -408,96 +416,6 @@ module GTK
     end
   end
 
-  ObjectTweetcart = Module.new do
-    extend tweetcart_included
-
-    def H *opts
-      Hash.new *opts
-    end
-
-    def SO! *opts
-      $args.outputs.solids << opts
-    end
-
-    def SP! *opts
-      $args.outputs.sprites << opts
-    end
-
-    def PR! *opts
-      $args.outputs.primitives << opts
-    end
-
-    def LA! *opts
-      $args.outputs.labels << opts
-    end
-
-    def LI! *opts
-      $args.outputs.labels << opts
-    end
-
-    def BO! *opts
-      $args.outputs.borders << opts
-    end
-
-    def _SO! *opts
-      $args.outputs.solids << opts
-    end
-
-    def _SP! *opts
-      $args.outputs.sprites << opts
-    end
-
-    def _PR! *opts
-      $args.outputs.primitives << opts
-    end
-
-    def _LA! *opts
-      $args.outputs.labels << opts
-    end
-
-    def _LI! *opts
-      $args.outputs.labels << opts
-    end
-
-    def _BO! *opts
-      $args.outputs.borders << opts
-    end
-
-    def PSO! *opts
-      $args.outputs.p.solids << opts
-    end
-
-    def PSP! *opts
-      $args.outputs.p.sprites << opts
-    end
-
-    def PPR! *opts
-      $args.outputs.p.primitives << opts
-    end
-
-    def PLA! *opts
-      $args.outputs.p.labels << opts
-    end
-
-    def PLI! *opts
-      $args.outputs.p.lines << opts
-    end
-
-    def PBO! *opts
-      $args.outputs.p.borders << opts
-    end
-
-    def PC!
-      $args.outputs.pc
-    end
-
-    def self.aliases
-      [
-        :dsm, :define_singleton_method
-      ]
-    end
-  end
-
   ModuleTweetcart = Module.new do
     extend tweetcart_included
 
@@ -758,21 +676,115 @@ module GTK
     end
   end
 
+  ObjectTweetcart = Module.new do
+    extend tweetcart_included
+
+    def SO! *opts
+      $args.outputs.solids << opts
+    end
+
+    def SP! *opts
+      $args.outputs.sprites << opts
+    end
+
+    def PR! *opts
+      $args.outputs.primitives << opts
+    end
+
+    def LA! *opts
+      $args.outputs.labels << opts
+    end
+
+    def LI! *opts
+      $args.outputs.labels << opts
+    end
+
+    def BO! *opts
+      $args.outputs.borders << opts
+    end
+
+    def _SO! *opts
+      $args.outputs.solids << opts
+    end
+
+    def _SP! *opts
+      $args.outputs.sprites << opts
+    end
+
+    def _PR! *opts
+      $args.outputs.primitives << opts
+    end
+
+    def _LA! *opts
+      $args.outputs.labels << opts
+    end
+
+    def _LI! *opts
+      $args.outputs.labels << opts
+    end
+
+    def _BO! *opts
+      $args.outputs.borders << opts
+    end
+
+    def PSO! *opts
+      $args.outputs.p.solids << opts
+    end
+
+    def PSP! *opts
+      $args.outputs.p.sprites << opts
+    end
+
+    def PPR! *opts
+      $args.outputs.p.primitives << opts
+    end
+
+    def PLA! *opts
+      $args.outputs.p.labels << opts
+    end
+
+    def PLI! *opts
+      $args.outputs.p.lines << opts
+    end
+
+    def PBO! *opts
+      $args.outputs.p.borders << opts
+    end
+
+    def PC!
+      $args.outputs.pc
+    end
+
+    def self.aliases
+      [
+        :dsm, :define_singleton_method
+      ]
+    end
+  end
+
   module Tweetcart
     include Math
 
     F = 255
 
-    def C(x, y, radius, r = nil, g = nil, b = nil, a = nil)
+    def W
+      $args.grid.w
+    end
+
+    def H
+      $args.grid.h
+    end
+
+    def CI(x, y, radius, r = 0, g = 0, b = 0, a = 255)
       [radius.to_square(x, y), :c, 0, a, r, g, b].sprite
     end
 
-    def csb(string, size_enum=nil, font='font.ttf')
+    def csb(string, size_enum = nil, font = 'font.ttf')
       $gtk.calcstringbox(string, size_enum, font)
     end
 
     def sum(*args)
-      $gtk.args.fn.+(*args)
+      $args.fn.+(*args)
     end
 
     def self.aliases

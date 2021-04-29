@@ -1,3 +1,12 @@
+# coding: utf-8
+# MIT License
+# tweetcart.rb has been released under MIT (*only this file*).
+
+# Contributors outside of DragonRuby who also hold Copyright:
+# - https://github.com/HIRO-R-B
+# - https://github.com/oeloeloel
+# - https://github.com/leviongit
+
 module GTK
   module Args::Tweetcart
     def t
@@ -146,6 +155,14 @@ module GTK
       self.outputs.pc
     end
 
+    def g
+      self.grid
+    end
+
+    def gre
+      self.grid.rect
+    end
+
     def w
       self.grid.w
     end
@@ -190,6 +207,8 @@ module GTK
         :_bo, 'outputs.static_borders',
         :p,   'outputs.p',
         :pc,  'outputs.pc',
+        :g,   'grid',
+        :gre, 'grid.rect',
         :w,   'grid.width',
         :h,   'grid.height',
       ]
@@ -611,6 +630,14 @@ module GTK
       divmod(x)
     end
 
+    def sin
+      Math.sin(self.to_radians)
+    end
+
+    def cos
+      Math.cos(self.to_radians)
+    end
+
     def self.aliases
       [
         :a,   :abs,
@@ -768,6 +795,44 @@ module GTK
     F = 255
     W = $args.grid.w
     H = $args.grid.h
+    Z = [0]
+
+    class P
+      def self.do *args, &block
+        Class.new do
+          args.each do |m|
+            puts m
+            attr_accessor m
+          end
+
+          define_method :draw_call, &block
+
+          def draw_override(ffi)
+            draw_call ffi
+          end
+        end
+      end
+
+      def self.ds3 &block
+        Class.new do
+          attr_sprite
+
+          define_method :draw_call, &block
+
+          def draw_override(ffi)
+            draw_call
+            ffi.draw_sprite_3(@x, @y, @w, @h,
+                              @path,
+                              @angle,
+                              @a, @r, @g, @b,
+                              @tile_x, @tile_y, @tile_w, @tile_h,
+                              @flip_horizontally, @flip_vertically,
+                              @angle_anchor_x, @angle_anchor_y,
+                              @source_x, @source_y, @source_w, @source_h)
+          end
+        end
+      end
+    end
 
     def CI(x, y, radius, r = 0, g = 0, b = 0, a = 255)
       [radius.to_square(x, y), :c, 0, a, r, g, b].sprite

@@ -798,20 +798,20 @@ module GTK
     Z = [0]
 
     class P
-      def self.do *args, &block
-        Class.new do
-          args.each do |m|
-            puts m
-            attr_accessor m
-          end
+#       def self.do *args, &block
+#         Class.new do
+#           args.each do |m|
+#             puts m
+#             attr_accessor m
+#           end
 
-          define_method :draw_call, &block
+#           define_method :draw_call, &block
 
-          def draw_override(ffi)
-            draw_call ffi
-          end
-        end
-      end
+#           def draw_override(ffi)
+#             draw_call ffi
+#           end
+#         end
+#       end
 
       def self.ds3 &block
         Class.new do

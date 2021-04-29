@@ -2,12 +2,6 @@
 require 'app/tweetcart.rb'
 require 'app/tweetcart_docs.rb'
 
-class A
-  def do
-    'apple'
-  end
-end
-
 eval <<-S
 def tick a
   if Kernel.global_tick_count == 0

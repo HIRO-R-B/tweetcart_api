@@ -802,11 +802,7 @@ module GTK
         Class.new do
           attr_accessor *args
 
-          define_method :draw_call, &block
-
-          def draw_override(ffi)
-            draw_call ffi
-          end
+          define_method :draw_override, &block
         end
       end
 

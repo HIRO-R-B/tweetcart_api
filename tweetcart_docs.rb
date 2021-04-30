@@ -172,7 +172,7 @@ S
     <<-S
 *** args.geometry
 Geometry methods available on Arrays and Hashes also include these aliases
-#{ TweetcartDocs.format_aliases GTK::Geometry::Tweetcart.aliases + GTK::Geometry::Tweetcart.aliases_extended }
+#{ TweetcartDocs.format_aliases GTK::Geometry::Tweetcart.singleton_aliases }
 
 S
   end

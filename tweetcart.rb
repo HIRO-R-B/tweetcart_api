@@ -61,6 +61,8 @@ module GTK
       end
 
       def self.dsp path = nil, &block
+        path &&= path.to_s
+
         Class.new do
           attr :x, :y, :w, :h,
             :p,

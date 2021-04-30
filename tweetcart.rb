@@ -215,11 +215,19 @@ module GTK
     end
   end
 
+  TweetcartErrors = [] # Depreciated methods/Errors will get collected here when Tweetcart.setup is run
+
   tweetcart_included = Module.new do
     def included(base)
       tweetcart_aliases = aliases
       base.class_eval do
-        tweetcart_aliases.each_slice(2) { |new, old| alias_method new, old }
+        tweetcart_aliases.each_slice(2) do |new, old|
+          begin
+            alias_method new, old
+          rescue NameError => e
+            TweetcartErrors << "#{e}"
+          end
+        end
       end
     end
   end
@@ -278,6 +286,7 @@ module GTK
         :_bo, :static_borders,
         :_de, :static_debug,
         :bg=, :background_color=,
+        :apple,:pie
       ]
     end
   end
@@ -414,9 +423,15 @@ module GTK
 
     def self.extended(base)
       tweetcart_aliases = aliases + aliases_extended
-      tweetcart_aliases -= [:ar, :anchor_rect] # FIXME:: Anchor rect doesn't exist on the Geometry Class atm
+      # tweetcart_aliases -= [:ar, :anchor_rect] # FIXME:: Anchor rect doesn't exist on the Geometry Class atm
       base.singleton_class.module_eval do
-        tweetcart_aliases.each_slice(2) { |new, old| alias_method new, old }
+        tweetcart_aliases.each_slice(2) do |new, old|
+          begin
+            alias_method new, old
+          rescue NameError => e
+            TweetcartErrors << "#{e}"
+          end
+        end
       end
     end
   end

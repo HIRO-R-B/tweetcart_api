@@ -435,16 +435,6 @@ module GTK
     end
   end
 
-  ModuleTweetcart = Module.new do
-    extend tweetcart_included
-
-    def self.aliases
-      [
-        :dm, :define_method,
-      ]
-    end
-  end
-
   EnumerableTweetcart = Module.new do
     extend tweetcart_included
 
@@ -703,6 +693,16 @@ module GTK
     end
   end
 
+  ModuleTweetcart = Module.new do
+    extend tweetcart_included
+
+    def self.aliases
+      [
+        :dm, :define_method,
+      ]
+    end
+  end
+
   ObjectTweetcart = Module.new do
     extend tweetcart_included
 
@@ -789,6 +789,48 @@ module GTK
     end
   end
 
+  FFIDrawTweetcart = Module.new do
+    def dso(x, y, w, h, r = nil, g = nil, b = nil, a = nil)
+      draw_solid(x, y, w, h, r, g, b, a)
+    end
+
+    def dsp(x, y, w, h, path,
+            angle = nil,
+            a = nil, r = nil, g = nil, b = nil,
+            tile_x = nil, tile_y = nil, tile_w = nil, tile_h = nil,
+            flip_horizontally = nil, flip_vertically = nil,
+            angle_anchor_x = nil, angle_anchor_y = nil,
+            source_x = nil, source_y = nil, source_w = nil, source_h = nil)
+
+      draw_sprite_3(x, y, w, h, path,
+                    angle,
+                    a, r, g, b,
+                    tile_x, tile_y, tile_w, tile_h,
+                    flip_horizontally, flip_vertically,
+                    angle_anchor_x, angle_anchor_y,
+                    source_x, source_y, source_w, source_h)
+    end
+
+    def dla(x, y, text,
+            size_enum = nil, alignment_enum = nil,
+            r = nil, g = nil, b = nil, a = nil,
+            font = nil)
+
+      draw_label(x, y, text,
+                 size_enum, alignment_enum,
+                 r, g, b, a,
+                 font)
+    end
+
+    def dli(x, y, x2, y2, r = nil, g = nil, b = nil, a = nil)
+      draw_line(x, y, x2, y2, r, g, b, a)
+    end
+
+    def dbo(x, y, w, h, r = nil, g = nil, b = nil, a = nil)
+      draw_border(x, y, w, h, r, g, b, a) 
+    end
+  end
+
   module Tweetcart
     include Math
 
@@ -806,24 +848,39 @@ module GTK
         end
       end
 
-      def self.ds3 &block
-        Class.new do
-          attr_sprite
+      def self.so *args, &block
+        self.do(:x, :y, :w, :h,
+                :r, :g, :b, :a,
+                *args, &block)
+      end
 
-          define_method :draw_call, &block
+      def self.sp *args, &block
+        self.do(:x, :y, :w, :h, :p,
+                :an,
+                :a, :r, :g, :b,
+                :tx, :ty, :tw, :th,
+                :fh, :fv,
+                :aax, :aay,
+                :sx, :sy, :sw, :sh,
+                *args, &block)
+      end
 
-          def draw_override(ffi)
-            draw_call
-            ffi.draw_sprite_3(@x, @y, @w, @h,
-                              @path,
-                              @angle,
-                              @a, @r, @g, @b,
-                              @tile_x, @tile_y, @tile_w, @tile_h,
-                              @flip_horizontally, @flip_vertically,
-                              @angle_anchor_x, @angle_anchor_y,
-                              @source_x, @source_y, @source_w, @source_h)
-          end
-        end
+      def self.la *args, &block
+        self.do(:x, :y, :t,
+                :sen, :aen,
+                :r, :g, :b, :a,
+                :f,
+                *args, &block)
+      end
+
+      def self.li *args, &block
+        self.do(:x, :y, :x2, :y2,
+                :r, :g, :b, :a,
+                *args, &block)
+      end
+
+      def self.bo *args, &block
+        self.so(*args, &block)
       end
     end
 
@@ -857,14 +914,15 @@ module GTK
       args.geometry.include                          ::GTK::Geometry::Tweetcart
       args.geometry.extend                           ::GTK::Geometry::Tweetcart
       GTK::Primitive::ConversionCapabilities.include ::GTK::Primitive::ConversionCapabilities::Tweetcart
-      Object.include                                 ::GTK::ObjectTweetcart
-      Module.include                                 ::GTK::ModuleTweetcart
       Enumerable.include                             ::GTK::EnumerableTweetcart
       Array.include                                  ::GTK::ArrayTweetcart
       Hash.include                                   ::GTK::HashTweetcart
       Numeric.include                                ::GTK::NumericTweetcart
       Fixnum.include                                 ::GTK::FixnumTweetcart
       Symbol.include                                 ::GTK::SymbolTweetcart
+      Module.include                                 ::GTK::ModuleTweetcart
+      Object.include                                 ::GTK::ObjectTweetcart
+      FFI::Draw.include                              ::GTK::FFIDrawTweetcart
       $top_level.include                             ::GTK::Tweetcart
     end
 

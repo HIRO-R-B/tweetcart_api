@@ -1,3 +1,4 @@
+
 =begin
 def t a
   a.bg=[127]*3
@@ -107,7 +108,6 @@ end
 # PSP!
 # end
 
-
 # (b=S.new).x,b.y=a.m.p if a.ml
 
 # $t+=2
@@ -128,9 +128,11 @@ end
 # end
 
 # T||=Class.new do attr_sprite;def draw_override f;f.draw_sprite_3 x=@x+=(@y*4).sin,y=@y+=(x*4).cos,w=(y.sin*x.cos*10).a+8,w,'c',0,F,(x-F)*b=0.8,(y-99)*b,(x+y-H)*b,*[p]*12;end;end
-# T||=P.ds3{x=@x+=(@y*4).sin;y=@y+=(x*4).cos;@h=@w=(y.sin*x.cos*10).a+8;@path='c';@a=F;@r=(x-F)*b=0.8;@g=(y-99)*b;@b=(x+y-H)*b}
-T||=P.do(:x,:y){|f|f.draw_sprite_3 x=@x+=(@y*4).sin,y=@y+=(x*4).cos,w=(y.sin*x.cos*10).a+8,w,'c',0,F,(x-F)*b=0.8,(y-99)*b,(x+y-H)*b,*[p]*12}
+# T||=P.do(:x,:y){|f|f.draw_sprite_3 x=@x+=(@y*4).sin,y=@y+=(x*4).cos,w=(y.sin*x.cos*10).a+8,w,'c',0,F,(x-F)*b=0.8,(y-99)*b,(x+y-H)*b,*[p]*12}
+
+T||=P.sp{|f|f.dsp x=@x+=(@y*4).sin,y=@y+=(x*4).cos,w=(y.sin*x.cos*10).a+8,w,'c',0,F,(x-F)*b=0.8,(y-99)*b,(x+y-H)*b}
 a.mr&&(_SP!.c;PC!)
 (b=T.new;b.x=a.m.x;b.y=a.m.y)if a.ml
 a.kh.z ? (PSP! b):(_SP! b)
 PSP!
+a.o.de << $gtk.current_framerate_primitives

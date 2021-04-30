@@ -285,8 +285,7 @@ module GTK
         :_li, :static_lines,
         :_bo, :static_borders,
         :_de, :static_debug,
-        :bg=, :background_color=,
-        :apple,:pie
+        :bg=, :background_color=
       ]
     end
   end

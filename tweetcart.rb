@@ -89,7 +89,7 @@ module GTK
         end
       end
 
-      def self.dsp path = nil, &draw_call
+      def self.dsp path=nil, &draw_call
         path &&= path.to_s
 
         Class.new do

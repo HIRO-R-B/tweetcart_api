@@ -138,8 +138,13 @@ a.bg=[0,0,0];x=a.m.x>W/2? W : 0;y=a.m.y>H/2? H : 0
 # T||=P.dsp(:c){@w+=a.t.sin;@h+=a.t.cos}
 # T||=P.dli{@x+=a.t.sin;@y+=a.t.cos}
 # _SP! T.new(*a.m.p, x, y, 255) if a.ml
-# _PR! T.new(*a.m.p, x, y2: y, b: 255) if a.mr
+# _PR! T.new(*a.m.p, y2: y, x2: x, b: 255) if a.mr
 T||=P.li{|f|f.dli @x+=a.t.sin,@y+=a.t.cos,@x2,@y2,@r,@g,@b}
 _SP! T.new(x: a.m.x, y: a.m.y, x2: x, y2: y, r: 255) if a.ml
-_PR! T.new(x: a.m.x, y: a.m.y, x2: x, y2: y, b: 255) if a.mr
+if a.mr
+  p = T.new(x: a.m.x, x2: x, b: 255)
+  p.y = a.m.y
+  p.y2 = y
+  _PR! p
+end
 #====

@@ -934,7 +934,7 @@ module GTK
     end
 
     def LI! *opts
-      $args.outputs.labels << opts
+      $args.outputs.lines << opts
     end
 
     def BO! *opts

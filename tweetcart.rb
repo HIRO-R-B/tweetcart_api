@@ -69,7 +69,7 @@ module GTK
             :solid
           end
 
-          def initialize x=nil, y=nil, w=nil, h=nil, r=nil, g=nil, b=nil, a=nil
+          def initialize x=nil, y=nil, w=nil, h=nil, r=nil, g=nil, b=nil, a=nil, **opts
             @x=x
             @y=y
             @w=w
@@ -78,6 +78,7 @@ module GTK
             @g=g
             @b=b
             @a=a
+            opts.each { |k, v| send :"#{k}=", v }
           end
 
           define_method :draw_call, &draw_call

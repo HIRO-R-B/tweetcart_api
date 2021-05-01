@@ -17,82 +17,220 @@ module GTK
     Z = [0]
 
     module P
-      def self.do *args, &block
+      def self.do *attrs, &block
         Class.new do
-          attr_accessor *args
+          attr *attrs
+
+          # NOTE: Yea, this class might not be a sprite,
+          # but you can't push it into primitives without a valid primitive marker even if you have draw_override defined
+          # So... ehh, for all intents and purposes, it's a "sprite"
+          def primitive_marker
+            :sprite
+          end
+
+          def initialize **opts
+            opts.each { |k, v| send :"#{k}=", v }
+          end
 
           define_method :draw_override, &block
         end
       end
 
-      def self.so *args, &block
-        self.do(:x, :y, :w, :h,
-                :r, :g, :b, :a,
-                *args, &block)
+      def self.so *attrs, &block
+        self.do(:x, :y, :w, :h, :r, :g, :b, :a, *attrs, &block)
       end
 
-      def self.sp *args, &block
-        self.do(:x, :y, :w, :h, :p,
-                :an,
-                :a, :r, :g, :b,
+      def self.sp *attrs, &block
+        self.do(:x, :y, :w, :h, :p, :an, :a,
+                :r, :g, :b,
                 :tx, :ty, :tw, :th,
                 :fh, :fv,
                 :aax, :aay,
                 :sx, :sy, :sw, :sh,
-                *args, &block)
+                *attrs, &block)
       end
 
-      def self.la *args, &block
-        self.do(:x, :y, :t,
-                :sen, :aen,
-                :r, :g, :b, :a,
-                :f,
-                *args, &block)
+      def self.la *attrs, &block
+        self.do(:x, :y, :t, :sen, :aen, :r, :g, :b, :a, :f, *attrs, &block)
       end
 
-      def self.li *args, &block
-        self.do(:x, :y, :x2, :y2,
-                :r, :g, :b, :a,
-                *args, &block)
+      def self.li *attrs, &block
+        self.do(:x, :y, :x2, :y2, :r, :g, :b, :a, *attrs, &block)
       end
 
-      def self.bo *args, &block
-        self.so(*args, &block)
+      def self.bo *attrs, &block
+        self.so(*attrs, &block)
       end
 
-      def self.dsp path = nil, &block
-        path &&= path.to_s
-
+      def self.dso &draw_call
         Class.new do
-          attr :x, :y, :w, :h,
-            :p,
-            :an,
-            :a, :r, :g, :b,
-            :tx, :ty, :tw, :th,
-            :fh, :fv,
-            :aax, :aay,
-            :sx, :sy, :sw, :sh
-
-          define_method :initialize do |x = nil, y = nil, w = nil, h = nil, p = path|
-            @x = x
-            @y = y
-            @w = w
-            @h = h
-            @p = p
+          attr :x, :y, :w, :h, :r, :g, :b, :a
+          def primitive_marker
+            :solid
           end
 
-          define_method :draw_call, &block
+          def initialize x=nil, y=nil, w=nil, h=nil, r=nil, g=nil, b=nil, a=nil
+            @x=x
+            @y=y
+            @w=w
+            @h=h
+            @r=r
+            @g=g
+            @b=b
+            @a=a
+          end
+
+          define_method :draw_call, &draw_call
 
           def draw_override(ffi)
             draw_call
-            ffi.draw_sprite_3(@x, @y, @w, @h,
-                              @p,
-                              @an,
-                              @a, @r, @g, @b,
+            ffi.draw_solid(@x, @y, @w, @h, @r, @g, @b, @a)
+          end
+        end
+      end
+
+      def self.dsp path = nil, &draw_call
+        path &&= path.to_s
+
+        Class.new do
+          attr :x, :y, :w, :h, :p, :an, :a,
+               :r, :g, :b,
+               :tx, :ty, :tw, :th,
+               :fh, :fv,
+               :aax, :aay,
+               :sx, :sy, :sw, :sh
+          def primitive_marker
+            :sprite
+          end
+
+          define_method :initialize do |x=nil, y=nil, w=nil, h=nil, p=path, an=nil, a=nil,
+                                        r=nil, g=nil, b=nil,
+                                        tx=nil, ty=nil, tw=nil, th=nil,
+                                        fh=nil, fv=nil,
+                                        aax=nil, aay=nil,
+                                        sx=nil, sy=nil, sw=nil, sh=nil,
+                                        **opts|
+            @x   = x
+            @y   = y
+            @w   = w
+            @h   = h
+            @p   = p
+            @an  = an
+            @a   = a
+            @r   = r
+            @g   = g
+            @b   = b
+            @tx  = tx
+            @ty  = ty
+            @tw  = tw
+            @th  = th
+            @fh  = fh
+            @fv  = fv
+            @aax = aax
+            @aay = aay
+            @sx  = sx
+            @sy  = sy
+            @sw  = sw
+            @sh  = sh
+            opts.each { |k, v| send :"#{k}=", v }
+          end
+
+          define_method :draw_call, &draw_call
+
+          def draw_override(ffi)
+            draw_call
+            ffi.draw_sprite_3(@x, @y, @w, @h, @p, @an, @a,
+                              @r, @g, @b,
                               @tx, @ty, @tw, @th,
                               @fh, @fv,
                               @aax, @aay,
                               @sx, @sy, @sw, @sh)
+          end
+        end
+      end
+
+      def self.dla &draw_call
+        Class.new do
+          attr :x, :y, :t, :sen, :aen, :r, :g, :b, :a, :f
+          def primitive_marker
+            :label
+          end
+
+          def initialize x=nil, y=nil, t=nil, sen=nil, aen=nil, r=nil, g=nil, b=nil, a=nil, f=nil, **opts
+            @x   = x
+            @y   = y
+            @t   = t
+            @sen = sen
+            @aen = aen
+            @r   = r
+            @g   = g
+            @b   = b
+            @a   = a
+            @f   = f
+            opts.each { |k, v| send :"#{k}=", v }
+          end
+
+          define_method :draw_call, &draw_call
+
+          def draw_override(ffi)
+            draw_call
+            ffi.draw_label(@x, @y, @t, @sen, @aen, @r, @g, @b, @a, @f)
+          end
+        end
+      end
+
+      def self.dli &draw_call
+        Class.new do
+          attr :x, :y, :x2, :y2, :r, :g, :b, :a
+          def primitive_marker
+            :line
+          end
+
+          def initialize x=nil, y=nil, x2=nil, y2=nil, r=nil, g=nil, b=nil, a=nil, **opts
+            @x  = x
+            @y  = y
+            @x2 = x2
+            @y2 = y2
+            @r  = r
+            @g  = g
+            @b  = b
+            @a  = a
+            opts.each { |k, v| send :"#{k}=", v }
+          end
+
+          define_method :draw_call, &draw_call
+
+          def draw_override(ffi)
+            draw_call
+            ffi.draw_line(@x, @y, @x2, @y2, @r, @g, @b, @a)
+          end
+        end
+      end
+
+      def self.dbo &draw_call
+        Class.new do
+          attr :x, :y, :w, :h, :r, :g, :b, :a
+          def primitive_marker
+            :border
+          end
+
+          def initialize x=nil, y=nil, w=nil, h=nil, r=nil, g=nil, b=nil, a=nil, **opts
+            @x = x
+            @y = y
+            @w = w
+            @h = h
+            @r = r
+            @g = g
+            @b = b
+            @a = a
+            opts.each { |k, v| send :"#{k}=", v }
+          end
+
+          define_method :draw_call, &draw_call
+
+          def draw_override(ffi)
+            draw_call
+            ffi.draw_border(@x, @y, @w, @h, @r, @g, @b, @a)
           end
         end
       end
@@ -320,48 +458,6 @@ module GTK
     end
   end
 
-  FFIDrawTweetcart = Module.new do
-    def dso(x, y, w, h, r = nil, g = nil, b = nil, a = nil)
-      draw_solid(x, y, w, h, r, g, b, a)
-    end
-
-    def dsp(x, y, w, h, path,
-            angle = nil,
-            a = nil, r = nil, g = nil, b = nil,
-            tile_x = nil, tile_y = nil, tile_w = nil, tile_h = nil,
-            flip_horizontally = nil, flip_vertically = nil,
-            angle_anchor_x = nil, angle_anchor_y = nil,
-            source_x = nil, source_y = nil, source_w = nil, source_h = nil)
-
-      draw_sprite_3(x, y, w, h, path,
-                    angle,
-                    a, r, g, b,
-                    tile_x, tile_y, tile_w, tile_h,
-                    flip_horizontally, flip_vertically,
-                    angle_anchor_x, angle_anchor_y,
-                    source_x, source_y, source_w, source_h)
-    end
-
-    def dla(x, y, text,
-            size_enum = nil, alignment_enum = nil,
-            r = nil, g = nil, b = nil, a = nil,
-            font = nil)
-
-      draw_label(x, y, text,
-                 size_enum, alignment_enum,
-                 r, g, b, a,
-                 font)
-    end
-
-    def dli(x, y, x2, y2, r = nil, g = nil, b = nil, a = nil)
-      draw_line(x, y, x2, y2, r, g, b, a)
-    end
-
-    def dbo(x, y, w, h, r = nil, g = nil, b = nil, a = nil)
-      draw_border(x, y, w, h, r, g, b, a)
-    end
-  end
-
   Inputs::Tweetcart = Module.new do
     extend tweetcart_included
 
@@ -506,6 +602,47 @@ module GTK
         :li, :line,
         :bo, :border
       ]
+    end
+  end
+
+  FFIDrawTweetcart = Module.new do
+    def dso(x, y, w, h, r=nil, g=nil, b=nil, a=nil)
+      draw_solid(x, y, w, h, r, g, b, a)
+    end
+
+    def dsp(x, y, w, h, path, angle=nil, a=nil,
+            r=nil, g=nil, b=nil,
+            tile_x=nil, tile_y=nil, tile_w=nil, tile_h=nil,
+            flip_horizontally=nil, flip_vertically=nil,
+            angle_anchor_x=nil, angle_anchor_y=nil,
+            source_x=nil, source_y=nil, source_w=nil, source_h=nil)
+
+      draw_sprite_3(x, y, w, h, path,
+                    angle,
+                    a, r, g, b,
+                    tile_x, tile_y, tile_w, tile_h,
+                    flip_horizontally, flip_vertically,
+                    angle_anchor_x, angle_anchor_y,
+                    source_x, source_y, source_w, source_h)
+    end
+
+    def dla(x, y, text,
+            size_enum=nil, alignment_enum=nil,
+            r=nil, g=nil, b=nil, a=nil,
+            font=nil)
+
+      draw_label(x, y, text,
+                 size_enum, alignment_enum,
+                 r, g, b, a,
+                 font)
+    end
+
+    def dli(x, y, x2, y2, r=nil, g=nil, b=nil, a=nil)
+      draw_line(x, y, x2, y2, r, g, b, a)
+    end
+
+    def dbo(x, y, w, h, r=nil, g=nil, b=nil, a=nil)
+      draw_border(x, y, w, h, r, g, b, a)
     end
   end
 

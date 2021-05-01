@@ -110,29 +110,36 @@ end
 
 # (b=S.new).x,b.y=a.m.p if a.ml
 
+
+
+#================ Implicit Tick a Tests Below
+#====
 # $t+=2
 # PSP! [0,0,W,H,:p,0,V=40,0,0,0],32.mwy(18){|x,y|[V*x,20*y+V*($t+x*V).sin-V,V,V,:p,$t,F,c=(V*x+$t).cw(0,F),2*c,3*c]}
+#====
 
+#======== P Class Tests
+#====
 
-# T||=S.nc { |f| 
-# f.ds3 x=@x+=(@y*4).isin,y=@y+=. 
-# (x*4).icos,w=. 
-# (y.isin*x.icos*10).a+8,w,'c',0,F,(x-F)*b=0.8,(y-99)*b,(x+y-H)*b,*[p]*12
-# }
+# # T ||= Class.new do attr_sprite; def draw_override f; f.draw_sprite_3 x=@x+=(@y*4).to_i.sin,y=@y+=(x*4).to_i.cos,w=(y.to_i.sin*x.to_i.cos*10).a+8,w,'c',0,F,(x-F)*b=0.8,(y-99)*b,(x+y-H)*b,*[p]*12; end; end
+# # T||=Class.new do attr_sprite;def draw_override f;f.draw_sprite_3 x=@x+=(@y*4).sin,y=@y+=(x*4).cos,w=(y.sin*x.cos*10).a+8,w,'c',0,F,(x-F)*b=0.8,(y-99)*b,(x+y-H)*b,*[p]*12;end;end
+# # T||=P.do(:x,:y){|f|f.draw_sprite_3 x=@x+=(@y*4).sin,y=@y+=(x*4).cos,w=(y.sin*x.cos*10).a+8,w,'c',0,F,(x-F)*b=0.8,(y-99)*b,(x+y-H)*b,*[p]*12}
+# T||=P.sp{|f|f.dsp x=@x+=(@y*4).sin,y=@y+=(x*4).cos,w=(y.sin*x.cos*10).a+8,w,'c',0,F,(x-F)*b=0.8,(y-99)*b,(x+y-H)*b}
+# a.mr&&(_SP!.c;PC!)
+# (b=T.new;b.x=a.m.x;b.y=a.m.y)if a.ml
+# a.kh.z ? (PSP! b):(_SP! b)
+# PSP!
+# a.o.de << $gtk.current_framerate_primitives
+#====
 
-# T ||= Class.new do
-  # attr_sprite
-  # def draw_override f
-    # f.draw_sprite_3 x=@x+=(@y*4).to_i.sin,y=@y+=(x*4).to_i.cos,w=(y.to_i.sin*x.to_i.cos*10).a+8,w,'c',0,F,(x-F)*b=0.8,(y-99)*b,(x+y-H)*b,*[p]*12
-  # end
-# end
+#====
 
-# T||=Class.new do attr_sprite;def draw_override f;f.draw_sprite_3 x=@x+=(@y*4).sin,y=@y+=(x*4).cos,w=(y.sin*x.cos*10).a+8,w,'c',0,F,(x-F)*b=0.8,(y-99)*b,(x+y-H)*b,*[p]*12;end;end
-# T||=P.do(:x,:y){|f|f.draw_sprite_3 x=@x+=(@y*4).sin,y=@y+=(x*4).cos,w=(y.sin*x.cos*10).a+8,w,'c',0,F,(x-F)*b=0.8,(y-99)*b,(x+y-H)*b,*[p]*12}
-
-T||=P.sp{|f|f.dsp x=@x+=(@y*4).sin,y=@y+=(x*4).cos,w=(y.sin*x.cos*10).a+8,w,'c',0,F,(x-F)*b=0.8,(y-99)*b,(x+y-H)*b}
-a.mr&&(_SP!.c;PC!)
-(b=T.new;b.x=a.m.x;b.y=a.m.y)if a.ml
-a.kh.z ? (PSP! b):(_SP! b)
-PSP!
-a.o.de << $gtk.current_framerate_primitives
+a.bg=[0,0,0];x=a.m.x>W/2? W : 0;y=a.m.y>H/2? H : 0
+# T||=P.dsp(:c){@w+=a.t.sin;@h+=a.t.cos}
+# T||=P.dli{@x+=a.t.sin;@y+=a.t.cos}
+# _SP! T.new(*a.m.p, x, y, 255) if a.ml
+# _PR! T.new(*a.m.p, x, y2: y, b: 255) if a.mr
+T||=P.li{|f|f.dli @x+=a.t.sin,@y+=a.t.cos,@x2,@y2,@r,@g,@b}
+_SP! T.new(x: a.m.x, y: a.m.y, x2: x, y2: y, r: 255) if a.ml
+_PR! T.new(x: a.m.x, y: a.m.y, x2: x, y2: y, b: 255) if a.mr
+#====

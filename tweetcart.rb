@@ -236,7 +236,7 @@ module GTK
       end
     end
 
-    def CI(x, y, radius, r = 0, g = 0, b = 0, a = 255)
+    def CI(x, y, radius, r=0, g=0, b=0, a=255)
       [radius.to_square(x, y), :c, 0, a, r, g, b].sprite
     end
 

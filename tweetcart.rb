@@ -352,7 +352,7 @@ module GTK
     def vp(x, y, w, h, r = 0, g = 0, b = 0)
       self.outputs.primitives << [
         {x: 0, y: 0, w: x, h: self.grid.h, r: r, g: g, b: b}.solid,
-        {x: 0, y: 0, w: self.grid.w, h: 60, r: r, g: g, b: b}.solid,
+        {x: 0, y: 0, w: self.grid.w, h: y, r: r, g: g, b: b}.solid,
         {x: x + w, y: 0, w: self.grid.w - x, h: self.grid.h, r: r, g: g, b: b}.solid,
         {x: 0, y: y + h, w: self.grid.w, h: self.grid.h - y, r: r, g: g, b: b}.solid
       ]

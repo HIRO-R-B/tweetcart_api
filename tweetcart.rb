@@ -238,7 +238,7 @@ module GTK
     end
 
     def CI(x, y, radius, r=0, g=0, b=0, a=255)
-      [radius.to_square(x, y), :c, 0, a, r, g, b].sprite
+      [(2*radius).to_square(x, y), :c, 0, a, r, g, b].sprite
     end
 
     def csb(string, size_enum = nil, font = 'font.ttf')
@@ -730,6 +730,7 @@ module GTK
         :m!,   :map!,
         :mwi,  :map_with_index,
         :pe,   :permutation,
+        :p,    :point,
         :pr,   :product,
         :re,   :rect,
         :rs,   :rect_shift,
@@ -856,6 +857,7 @@ module GTK
 
         :s,   :seconds,
         :tb,  :to_byte,
+        :cl,  :clamp,
         :cw,  :clamp_wrap,
         :et,  :elapsed_time,
         :etp, :elapsed_time_percent,

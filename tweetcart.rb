@@ -11,10 +11,12 @@ module GTK
   module Tweetcart
     include Math
 
-    F = 255
-    W = $args.grid.w
-    H = $args.grid.h
-    Z = [0]
+    F   = 255
+    W   = $args.grid.w
+    H   = $args.grid.h
+    Z   = [0]
+    S30 = 30.sin
+    S60 = 60.sin
 
     module P
       def self.do *attrs, &block
@@ -65,6 +67,7 @@ module GTK
       def self.dso &draw_call
         Class.new do
           attr :x, :y, :w, :h, :r, :g, :b, :a
+
           def primitive_marker
             :solid
           end
@@ -100,6 +103,7 @@ module GTK
                :fh, :fv,
                :aax, :aay,
                :sx, :sy, :sw, :sh
+
           def primitive_marker
             :sprite
           end
@@ -153,6 +157,7 @@ module GTK
       def self.dla &draw_call
         Class.new do
           attr :x, :y, :t, :sen, :aen, :r, :g, :b, :a, :f
+
           def primitive_marker
             :label
           end
@@ -183,6 +188,7 @@ module GTK
       def self.dli &draw_call
         Class.new do
           attr :x, :y, :x2, :y2, :r, :g, :b, :a
+
           def primitive_marker
             :line
           end
@@ -211,6 +217,7 @@ module GTK
       def self.dbo &draw_call
         Class.new do
           attr :x, :y, :w, :h, :r, :g, :b, :a
+
           def primitive_marker
             :border
           end
@@ -237,11 +244,37 @@ module GTK
       end
     end
 
+    # General Circle
     def CI(x, y, radius, r=0, g=0, b=0, a=255)
       [(2*radius).to_square(x, y), :c, 0, a, r, g, b].sprite
     end
 
-    def csb(string, size_enum = nil, font = 'font.ttf')
+    # Equilateral Triangle
+    def TR(x, y, side_length, angle=0, r=0, g=0, b=0, a=255)
+      height = side_length * S60
+      { x: x - side_length / 2,
+        y: y - height / 3,
+        w: side_length,
+        h: height,
+        path: :t, angle: angle,
+        a: a, r: r, g: g, b: b,
+        angle_anchor_y: 0.333 }
+    end
+
+    # Poly
+    def PLY(points, r=nil, g=nil, b=nil, a=nil)
+      ply = PLYP(points, r, g, b, a)
+      l1  = ply[0]
+      l2  = ply[-1]
+      ply << [l1[0], l2[1], r, g, b, a]
+    end
+
+    # Poly Path
+    def PLYP(points, r=nil, g=nil, b=nil, a=nil)
+      points.flatten.each_slice(2).each_cons(2).map { |p1, p2| [p1, p2, r, g, b, a] }
+    end
+
+    def csb(string, size_enum=nil, font='font.ttf')
       $gtk.calcstringbox(string, size_enum, font)
     end
 
@@ -283,6 +316,7 @@ module GTK
       Array.include                                  ::GTK::ArrayTweetcart
       Hash.include                                   ::GTK::HashTweetcart
       Numeric.include                                ::GTK::NumericTweetcart
+      Integral.include                               ::GTK::IntegralTweetcart
       Fixnum.include                                 ::GTK::FixnumTweetcart
       Symbol.include                                 ::GTK::SymbolTweetcart
       Module.include                                 ::GTK::ModuleTweetcart
@@ -308,6 +342,29 @@ module GTK
         h = i - r
         l = Math.sqrt(r * r - h * h)
         args.outputs[:c].lines << { x: i, y: r - l, x2: i, y2: r + l, r: 255, g: 255, b: 255 }
+      end
+
+      m = Math.sqrt(3) / 2
+      b = 720
+      h = m * b
+
+      args.outputs[:t].w = b
+      args.outputs[:t].h = h
+
+      v1 = [  0, 0]
+      v2 = [720, 0]
+      v3 = [360, h]
+
+      is1 = (v3.x - v1.x) / (v3.y - v1.y)
+      is2 = (v3.x - v2.x) / (v3.y - v2.y)
+
+      x1 = x2 = v3.x
+
+      args.outputs[:t].lines << v3.y.downto(v1.y).map do |y|
+        line = [x1, y, x2, y, 255, 255, 255]
+        x1 -= is1
+        x2 -= is2
+        line
       end
     end
 
@@ -357,7 +414,7 @@ module GTK
         {x: 0, y: y + h, w: self.grid.w, h: self.grid.h - y, r: r, g: g, b: b}.solid
       ]
     end
-    
+
     def self.aliases
       [
         :t,   'tick_count',
@@ -373,6 +430,8 @@ module GTK
         :kh,  'inputs.keyboard.key_held',
         :ku,  'inputs.keyboard.key_up',
         :m,   'inputs.mouse',
+        :mx,  'inputs.mouse.x',
+        :my,  'inputs.mouse.y',
         :mc,  'inputs.mouse.click',
         :mw,  'inputs.mouse.wheel',
         :ml,  'inputs.mouse.button_left',
@@ -402,11 +461,7 @@ module GTK
     end
 
     aliases.each_slice(2) do |m, ref|
-      if m.include?('=')
-        instance_eval "define_method(:#{m}) { |arg| #{ref} arg }"
-        next
-      end
-
+      next instance_eval "define_method(:#{m}) { |arg| #{ref} arg }" if m.include?('=')
       instance_eval "define_method(:#{m}) { #{ref} }"
     end
   end
@@ -637,15 +692,8 @@ module GTK
                     source_x, source_y, source_w, source_h)
     end
 
-    def dla(x, y, text,
-            size_enum=nil, alignment_enum=nil,
-            r=nil, g=nil, b=nil, a=nil,
-            font=nil)
-
-      draw_label(x, y, text,
-                 size_enum, alignment_enum,
-                 r, g, b, a,
-                 font)
+    def dla(x, y, text, size_enum=nil, alignment_enum=nil, r=nil, g=nil, b=nil, a=nil, font=nil)
+      draw_label(x, y, text, size_enum, alignment_enum, r, g, b, a, font)
     end
 
     def dli(x, y, x2, y2, r=nil, g=nil, b=nil, a=nil)
@@ -839,6 +887,14 @@ module GTK
       rand_ratio.to_i
     end
 
+    def fl
+      floor
+    end
+
+    def ce
+      ceil
+    end
+
     def dm(x)
       divmod(x)
     end
@@ -856,6 +912,7 @@ module GTK
         :a,   :abs,
 
         :s,   :seconds,
+        :h,   :half,
         :tb,  :to_byte,
         :cl,  :clamp,
         :cw,  :clamp_wrap,
@@ -895,6 +952,24 @@ module GTK
         :e,   :each,
         :fr,  :from_right,
         :ft,  :from_top
+      ]
+    end
+  end
+
+  IntegralTweetcart = Module.new do
+    extend tweetcart_included
+
+    def self.aliases
+      [
+        :dt,  :downto,
+        :ne?, :negative?,
+        :nb?, :nobits?,
+        :nz?, :nonzero?,
+        :po?, :positive?,
+        :st,  :step,
+        :sc,  :succ,
+        :ut,  :upto,
+        :z?,  :zero?
       ]
     end
   end
@@ -1013,3 +1088,4 @@ module GTK
     end
   end
 end
+

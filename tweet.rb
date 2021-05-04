@@ -179,14 +179,21 @@ end
 # LI! PLY 0.st(360,2).m{|h|[640+h.sin*300,360+h.cos*300,640+cos(h*$a+=1e-06)*150,360+sin(h*$a)*150]},F,F,F
 #====
 
-#==== Triangle Tests
-
-I||=(D=T=2
-C=->n{F.h.+n.vx F.h}
-G=->d,x,y,s,a{d>1?3.t.m{|i|(a+i*120).v(s*S60/3+s/4*T.sin).str(x,y)}.mwi{|p,i|G[d-1,p.x,p.y,s/2,a+i*a]}: TR(x,y,s,a,C[a],C[a+90],C[a/6])})
-T+=0.05*D
-a.bg=Z*3
-D=(1+a.my/H*5).fl
-PSP! G[D,640,360,H,T]
+#======== Triangle Tests
+#==== Equilateral Triangle
+# I||=(D=T=2
+# C=->n{F.h.+n.vx F.h}
+# G=->d,x,y,s,a{d>1?3.t.m{|i|(a+i*120).v(s*S60/3+s/4*T.sin).str(x,y)}.mwi{|p,i|G[d-1,p.x,p.y,s/2,a+i*a]}: TR(x,y,s,a,C[a],C[a+90],C[a/6])})
+# T+=0.05*D
+# a.bg=Z*3
+# D=(1+a.my/H*5).fl
+# PSP! G[D,640,360,H,T]
 #====
 
+#==== Right Triangle
+b = 640 + a.t.vx(640)
+h = 360 + a.t.vy(360)
+SP! [0,0,b,h,:tr,0,F,0,0,0]
+$gtk.slowmo! 4
+
+#====

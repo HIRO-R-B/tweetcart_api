@@ -366,6 +366,28 @@ module GTK
         x2 -= is2
         line
       end
+
+      b = 720
+      h = b
+
+      args.outputs[:tr].w = b
+      args.outputs[:tr].h = h
+
+      v1 = [  0, 0]
+      v2 = [720, 0]
+      v3 = [  0, h]
+
+      is1 = (v3.x - v1.x) / (v3.y - v1.y)
+      is2 = (v3.x - v2.x) / (v3.y - v2.y)
+
+      x1 = x2 = v3.x
+
+      args.outputs[:tr].lines << v3.y.downto(v1.y).map do |y|
+        line = [x1, y, x2, y, 255, 255, 255]
+        x1 -= is1
+        x2 -= is2
+        line
+      end
     end
 
     def self.setup args

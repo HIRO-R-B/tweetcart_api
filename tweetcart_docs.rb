@@ -8,6 +8,20 @@
 # - https://github.com/leviongit
 
 module TweetcartDocs
+  def self.format_aliases aliases
+    en      = aliases.each_slice(2)
+    max_len = en.map { |new, _| new.length }.max
+    out     = en.map { |new, old| "  #{new.to_s.ljust(max_len)} | #{old}" }.join("\n")
+
+    <<-S
+**** Aliases
+#+begin_src
+#{out}
+#+end_src
+
+S
+  end
+
   def docs_method_sort_order
     [
       :docs_class,
@@ -26,6 +40,7 @@ module TweetcartDocs
       :docs_array,
       :docs_hash,
       :docs_numeric,
+      :docs_integral,
       :docs_fixnum,
       :docs_symbol,
       :docs_module,
@@ -245,6 +260,15 @@ S
 S
   end
 
+  def docs_integral
+    <<-S
+*** Integral
+Available on Integers and Floats
+#{ TweetcartDocs.format_aliases GTK::IntegralTweetcart.aliases }
+
+S
+  end
+
   def docs_fixnum
     <<-S
 *** Fixnum
@@ -271,6 +295,7 @@ S
     <<-S
 *** Module
 #{ TweetcartDocs.format_aliases GTK::ModuleTweetcart.aliases }
+
 S
   end
 
@@ -307,15 +332,10 @@ Persistence Clear
 
 S
   end
-
-  def self.format_aliases aliases
-    max_length = aliases.each_slice(2).map { |new, _| new.length }.max
-    out = aliases.each_slice(2).map { |new, old| "  #{new}#{' ' * (max_length - new.length)} | #{old}" }.join("\n")
-    "**** Aliases\n#+begin_src\n#{out}\n#+end_src"
-  end
 end
 
 module GTK::Tweetcart
   extend Docs
   extend TweetcartDocs
 end
+

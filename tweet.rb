@@ -112,7 +112,8 @@ end
 
 
 
-#================ Implicit Tick a Tests Below
+
+#================ Implicit Tick Tests Below
 #====
 # $t+=2
 # PSP! [0,0,W,H,:p,0,V=40,0,0,0],32.mwy(18){|x,y|[V*x,20*y+V*($t+x*V).sin-V,V,V,:p,$t,F,c=(V*x+$t).cw(0,F),2*c,3*c]}
@@ -134,17 +135,58 @@ end
 
 #====
 
-a.bg=[0,0,0];x=a.m.x>W/2? W : 0;y=a.m.y>H/2? H : 0
+# a.bg=[0,0,0]
+# x=a.m.x>W/2? W : 0;y=a.m.y>H/2? H : 0
 # T||=P.dsp(:c){@w+=a.t.sin;@h+=a.t.cos}
+# _SP! T.new(*a.m.p) if a.ml
+# a.vp *600.ts(W/2,H/2),*[F]*3
+
 # T||=P.dli{@x+=a.t.sin;@y+=a.t.cos}
 # _SP! T.new(*a.m.p, x, y, 255) if a.ml
 # _PR! T.new(*a.m.p, y2: y, x2: x, b: 255) if a.mr
-T||=P.li{|f|f.dli @x+=a.t.sin,@y+=a.t.cos,@x2,@y2,@r,@g,@b}
-_SP! T.new(x: a.m.x, y: a.m.y, x2: x, y2: y, r: 255) if a.ml
-if a.mr
-  p = T.new(x: a.m.x, x2: x, b: 255)
-  p.y = a.m.y
-  p.y2 = y
-  _PR! p
-end
+
+# T||=P.li{|f|f.dli @x+=a.t.sin,@y+=a.t.cos,@x2,@y2,@r,@g,@b}
+# _SP! T.new(x: a.m.x, y: a.m.y, x2: x, y2: y, r: 255) if a.ml
+# if a.mr
+  # p = T.new(x: a.m.x, x2: x, b: 255)
+  # p.y = a.m.y
+  # p.y2 = y
+  # _PR! p
+# end
 #====
+#========
+
+#==== Saturn with Moons
+
+# I||=_SP! CI 5+A=W/2,5+B=H/2,95
+# a.bg=Z*3
+# t=a.t
+# srand 0
+# 82.t{|i|a,b=t.v
+# PSP! ar=[A+50*(2*b+i*a),B+50*(2*a+i*b),C=[10,10,:p],t]if i<9
+# t<270&&i<3&&_SP!(ar)
+# v=W.r+t*0.2.rr
+# a,b=v.v
+# PR! [d=[A+10*(50*b+i*a),B+10*(50*a+i*b)],C,v,d.p.pic?([A,B],100)&&v%B>180&&0].sp}
+#====
+
+#==== Poly Test using Akziden's Line Thing
+
+# a.bg=Z*3
+# # Original:
+# # 360.t{|h|LI! [640+h.sin*300,360+h.cos*300,640+cos(h*$a+=1e-06)*150,360+sin(h*$a)*150,F,F,F]}
+# # With PLY:
+# LI! PLY 0.st(360,2).m{|h|[640+h.sin*300,360+h.cos*300,640+cos(h*$a+=1e-06)*150,360+sin(h*$a)*150]},F,F,F
+#====
+
+#==== Triangle Tests
+
+I||=(D=T=2
+C=->n{F.h.+n.vx F.h}
+G=->d,x,y,s,a{d>1?3.t.m{|i|(a+i*120).v(s*S60/3+s/4*T.sin).str(x,y)}.mwi{|p,i|G[d-1,p.x,p.y,s/2,a+i*a]}: TR(x,y,s,a,C[a],C[a+90],C[a/6])})
+T+=0.05*D
+a.bg=Z*3
+D=(1+a.my/H*5).fl
+PSP! G[D,640,360,H,T]
+#====
+

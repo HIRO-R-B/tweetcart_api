@@ -138,7 +138,7 @@ S
     [radius.to_square(x, y), :c, 0, a, r, g, b].sprite
   end
 #+end_src
-#{ TweetcartDocs.format_aliases GTK::Tweetcart.aliases }
+#{TweetcartDocs.format_aliases GTK::MainTweetcart.aliases}
 
 S
   end
@@ -146,7 +146,7 @@ S
   def docs_args
     <<-S
 *** args
-#{ TweetcartDocs.format_aliases GTK::Args::Tweetcart.aliases }
+#{TweetcartDocs.format_aliases GTK::Args::Tweetcart.aliases}
 
 S
   end
@@ -154,7 +154,7 @@ S
   def docs_inputs
     <<-S
 *** args.inputs
-#{ TweetcartDocs.format_aliases GTK::Inputs::Tweetcart.aliases }
+#{TweetcartDocs.format_aliases GTK::Inputs::Tweetcart.aliases}
 
 S
   end
@@ -162,7 +162,7 @@ S
   def docs_mouse
     <<-S
 **** *.mouse
-#{ TweetcartDocs.format_aliases GTK::Mouse::Tweetcart.aliases }
+#{TweetcartDocs.format_aliases GTK::Mouse::Tweetcart.aliases}
 
 S
   end
@@ -170,7 +170,7 @@ S
   def docs_keyboard
     <<-S
 **** *.keyboard
-#{ TweetcartDocs.format_aliases GTK::Keyboard::Tweetcart.aliases }
+#{TweetcartDocs.format_aliases GTK::Keyboard::Tweetcart.aliases}
 
 S
   end
@@ -178,7 +178,7 @@ S
   def docs_outputs
     <<-S
 *** args.outputs
-#{ TweetcartDocs.format_aliases GTK::Outputs::Tweetcart.aliases }
+#{TweetcartDocs.format_aliases GTK::Outputs::Tweetcart.aliases}
 
 S
   end
@@ -187,7 +187,7 @@ S
     <<-S
 *** args.geometry
 Geometry methods available on Arrays and Hashes also include these aliases
-#{ TweetcartDocs.format_aliases GTK::Geometry::Tweetcart.singleton_aliases }
+#{TweetcartDocs.format_aliases GTK::Geometry::Tweetcart.singleton_aliases}
 
 S
   end
@@ -196,7 +196,7 @@ S
     <<-S
 *** Primitive Conversions
 Available on Arrays and Hashes
-#{ TweetcartDocs.format_aliases GTK::Primitive::ConversionCapabilities::Tweetcart.aliases }
+#{TweetcartDocs.format_aliases GTK::Primitive::ConversionCapabilities::Tweetcart.aliases}
 
 S
   end
@@ -204,7 +204,7 @@ S
   def docs_enumerable
     <<-S
 *** Enumerable
-#{ TweetcartDocs.format_aliases GTK::EnumerableTweetcart.aliases }
+#{TweetcartDocs.format_aliases GTK::EnumerableTweetcart.aliases}
 
 S
   end
@@ -212,7 +212,7 @@ S
   def docs_array
     <<-S
 *** Array
-#{ TweetcartDocs.format_aliases GTK::ArrayTweetcart.aliases - GTK::Geometry::Tweetcart.aliases }
+#{TweetcartDocs.format_aliases GTK::ArrayTweetcart.aliases - GTK::Geometry::Tweetcart.aliases}
 
 S
   end
@@ -220,7 +220,7 @@ S
   def docs_hash
     <<-S
 *** Hash
-#{ TweetcartDocs.format_aliases GTK::HashTweetcart.aliases - GTK::Primitive::ConversionCapabilities::Tweetcart.aliases }
+#{TweetcartDocs.format_aliases GTK::HashTweetcart.aliases - GTK::Primitive::ConversionCapabilities::Tweetcart.aliases}
 
 S
   end
@@ -255,7 +255,7 @@ S
     Math.cos(self.to_radians)
   end
 #+end_src
-#{ TweetcartDocs.format_aliases GTK::NumericTweetcart.aliases }
+#{TweetcartDocs.format_aliases GTK::NumericTweetcart.aliases}
 
 S
   end
@@ -264,7 +264,7 @@ S
     <<-S
 *** Integral
 Available on Integers and Floats
-#{ TweetcartDocs.format_aliases GTK::IntegralTweetcart.aliases }
+#{TweetcartDocs.format_aliases GTK::IntegralTweetcart.aliases}
 
 S
   end
@@ -272,7 +272,7 @@ S
   def docs_fixnum
     <<-S
 *** Fixnum
-#{ TweetcartDocs.format_aliases GTK::FixnumTweetcart.aliases }
+#{TweetcartDocs.format_aliases GTK::FixnumTweetcart.aliases}
 
 S
   end
@@ -294,7 +294,7 @@ S
   def docs_module
     <<-S
 *** Module
-#{ TweetcartDocs.format_aliases GTK::ModuleTweetcart.aliases }
+#{TweetcartDocs.format_aliases GTK::ModuleTweetcart.aliases}
 
 S
   end
@@ -328,7 +328,7 @@ Persistence Clear
     PC! if a.mc # Clears them all
   end
 #+end_src
-#{ TweetcartDocs.format_aliases GTK::ObjectTweetcart.aliases }
+#{TweetcartDocs.format_aliases GTK::ObjectTweetcart.aliases}
 
 S
   end

@@ -1009,6 +1009,34 @@ module GTK
   end
 
   SymbolTweetcart = Module.new do
+    def so
+      $args.outputs[self].solids
+    end
+
+    def sp
+      $args.outputs[self].sprites
+    end
+
+    def pr
+      $args.outputs[self].primitives
+    end
+
+    def la
+      $args.outputs[self].labels
+    end
+
+    def li
+      $args.outputs[self].lines
+    end
+
+    def bo
+      $args.outputs[self].borders
+    end
+
+    def de
+      $args.outputs[self].debug
+    end
+
     def [] *args, &block
       -> caller, *rest { caller.send self, *rest, *args, &block }
     end

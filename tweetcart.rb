@@ -162,6 +162,7 @@ module GTK
     include Math
 
     F   = 255
+    G   = 127
     W   = $args.grid.w
     H   = $args.grid.h
     Z   = [0]

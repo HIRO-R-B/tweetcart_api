@@ -165,6 +165,7 @@ module GTK
     G   = 127
     W   = $args.grid.w
     H   = $args.grid.h
+    N   = [nil]
     Z   = [0]
     S30 = 30.sin
     S60 = 60.sin
@@ -219,9 +220,10 @@ module GTK
         self.so(*attrs, &block)
       end
 
-      def self.dso &draw_call
+      def self.dso *attrs, &draw_call
         Class.new do
           attr_accessor :x, :y, :w, :h, :r, :g, :b, :a
+          attr_accessor *attrs
 
           def primitive_marker
             :solid
@@ -248,7 +250,7 @@ module GTK
         end
       end
 
-      def self.dsp path=nil, &draw_call
+      def self.dsp path=nil, *attrs, &draw_call
         path &&= path.to_s
 
         Class.new do
@@ -258,6 +260,7 @@ module GTK
                         :fh, :fv,
                         :aax, :aay,
                         :sx, :sy, :sw, :sh
+          attr_accessor *attrs
 
           def primitive_marker
             :sprite
@@ -304,9 +307,10 @@ module GTK
         end
       end
 
-      def self.dla &draw_call
+      def self.dla *attrs, &draw_call
         Class.new do
           attr_accessor :x, :y, :t, :sen, :aen, :r, :g, :b, :a, :f
+          attr_accessor *attrs
 
           def primitive_marker
             :label
@@ -335,9 +339,10 @@ module GTK
         end
       end
 
-      def self.dli &draw_call
+      def self.dli *attrs, &draw_call
         Class.new do
           attr_accessor :x, :y, :x2, :y2, :r, :g, :b, :a
+          attr_accessor *attrs
 
           def primitive_marker
             :line
@@ -364,9 +369,10 @@ module GTK
         end
       end
 
-      def self.dbo &draw_call
+      def self.dbo *attrs, &draw_call
         Class.new do
-          attr :x, :y, :w, :h, :r, :g, :b, :a
+          attr_accessor :x, :y, :w, :h, :r, :g, :b, :a
+          attr_accessor *attrs
 
           def primitive_marker
             :border

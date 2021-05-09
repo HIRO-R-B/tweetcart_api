@@ -85,6 +85,7 @@ module GTK
       GTK::Geometry.extend                           ::GTK::Geometry::Tweetcart
       GTK::Primitive::ConversionCapabilities.include ::GTK::Primitive::ConversionCapabilities::Tweetcart
       FFI::Draw.include                              ::GTK::FFIDrawTweetcart
+      Enumerator.include                             ::GTK::EnumeratorTweetcart
       Enumerable.include                             ::GTK::EnumerableTweetcart
       Array.include                                  ::GTK::ArrayTweetcart
       Hash.include                                   ::GTK::HashTweetcart
@@ -760,6 +761,17 @@ module GTK
     end
   end
 
+  module EnumeratorTweetcart
+    extend Tweetcart::Include
+
+    def self.aliases
+      [
+        :e,  :each,
+        :ei, :each_with_index
+      ]
+    end
+  end
+
   module EnumerableTweetcart
     extend Tweetcart::Include
 
@@ -942,12 +954,20 @@ module GTK
       rand_ratio.to_i
     end
 
+    def i
+      to_i
+    end
+
     def fl
       floor
     end
 
     def ce
       ceil
+    end
+
+    def rn
+      round
     end
 
     def dm(x)

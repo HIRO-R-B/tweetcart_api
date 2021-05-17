@@ -69,11 +69,11 @@ module GTK
     ##
     # Tweetcart entry point
     def self.setup args
-      setup_patches args
+      setup_patches
       setup_textures args
     end
 
-    def self.setup_patches args # NOTE: Doesn't actually need args anymore, but...
+    def self.setup_patches
       GTK::Args.include                              ::GTK::Args::Tweetcart
       GTK::Outputs.include                           ::GTK::Outputs::Tweetcart
       GTK::Inputs.include                            ::GTK::Inputs::Tweetcart

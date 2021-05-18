@@ -146,6 +146,13 @@ Returns an equilateral triangle sprite (as hash) with a given ~side_length~ cent
 
 **** ~#PLY points, r = nil, g = nil, b = nil, a = nil~
 Returns an array of lines that form an unfilled polygon
+    
+#+begin_src
+  def t a
+    # draws a red polygon in the shape of a house
+    LI! PLY [100,100, 100,200, 150,250, 200,200, 200,100], 255, 0 ,0
+  end
+#+end_src
 
 **** ~#PLYP points, r = nil, g = nil, b = nil, a = nil~
 Returns an array of lines that form a path

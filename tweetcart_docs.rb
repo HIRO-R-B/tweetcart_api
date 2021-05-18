@@ -57,7 +57,7 @@ To make Tweetcart mode available, define your ~tick~ method as ~t~
 #+begin_src
   def t a
     m = a.i.m                   # args.inputs.mouse
-    a.o.s << [m.x, m.y, 10, 10] # args.outputs.solids
+    a.o.so << [m.x, m.y, 10, 10] # args.outputs.solids
   end
 #+end_src
 

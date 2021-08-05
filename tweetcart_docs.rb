@@ -54,7 +54,7 @@ S
 ** Built-In Render Targets
 ~GTK::Tweetcart~ provides built-in circle and 1x1 pixel render targets, which you can access with ~:c~ and ~:p~ respectively.
 #+begin_src
-  def tick a
+  def t a
     a.bc = [0, 0, 0] # a.outputs.background_color = [0, 0, 0]
 
     a.s.r ||= 0 # args.state.r ||= 0
@@ -76,7 +76,7 @@ S
 ** Math
 All methods available to ~Math~ are included into ~main~ and are usable
 #+begin_src
-  def tick a
+  def t a
     puts sin(a.t) # Math.sin(args.tick_count)
   end
 #+end_src
@@ -135,7 +135,7 @@ S
 **** ~#(SO! | SP! | PR! | LA! | LI! | BO!) *opts~
 Aliases for pushing into outputs
 #+begin_src
-  def tick a
+  def t a
     SO! [0, 0, 10, 10], [100, 100, 200, 200]
     # a.so << [[0, 0, 10, 10], [100, 100, 200, 200]]
   end

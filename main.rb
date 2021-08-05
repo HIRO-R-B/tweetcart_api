@@ -5,7 +5,7 @@ require 'app/tweetcart_docs.rb'
 eval <<-S
 def tick a
   if Kernel.global_tick_count == 0
-    # Kernel.export_docs!
+    Kernel.export_docs!
     GTK::Tweetcart.setup a
   end
 

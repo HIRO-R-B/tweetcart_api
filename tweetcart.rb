@@ -12,61 +12,6 @@ module GTK
   # Tweetcart: The main module
   module Tweetcart
     ##
-    # Tweetcart Modules can extend `Tweetcart::(Include|Extend)`
-    #
-    # Provide an included/extended that define aliases (or log if they're missing)
-    # on a base when the module's mixed
-    ##
-
-    ##
-    # `aliases` must be defined on the module
-    # and return an array of the form
-    # [ new_method_alias, old_method_name,
-    #   new_method_alias, old_method_name,
-    #   ... ]
-    module Include
-      def included(base)
-        tweetcart_aliases = aliases
-        base.class_eval do
-          tweetcart_aliases.each_slice(2) do |new, old|
-            begin
-              alias_method new, old
-            rescue NameError => e
-              Tweetcart.error_log << "#{e}"
-            end
-          end
-        end
-      end
-    end
-
-    ##
-    # `singleton_aliases` must be defined on the module
-    module Extend
-      def extended(base)
-        tweetcart_aliases = singleton_aliases
-        base.singleton_class.class_eval do
-          tweetcart_aliases.each_slice(2) do |new, old|
-            begin
-              alias_method new, old
-            rescue NameError => e
-              Tweetcart.error_log << "#{e}"
-            end
-          end
-        end
-      end
-    end
-
-    ##
-    # Depreciated/Nonexistent methods will get collected here when Tweetcart modules get included
-    def self.error_log
-      @error_log ||= []
-    end
-
-    def self.error_log?
-      !@error_log.nil?
-    end
-
-    ##
     # Tweetcart entry point
     def self.setup args
       setup_patches
@@ -110,8 +55,6 @@ module GTK
     H   = $args.grid.h
     N   = [nil]
     Z   = [0]
-    S30 = 30.sin
-    S60 = 60.sin
 
     ##
     # General circle centered at x and y
@@ -121,6 +64,12 @@ module GTK
   end
 
   module Args::Tweetcart
+    ##
+    # `aliases` must be defined on the module
+    # and return an array of the form
+    # [ new_method_alias, old_method_name,
+    #   new_method_alias, old_method_name,
+    #   ... ]
     def self.aliases
       [
         :t,   'tick_count',
@@ -171,8 +120,6 @@ module GTK
   end
 
   module NumericTweetcart
-    extend Tweetcart::Include
-
     def sin
       Math.sin(self.to_radians)
     end
@@ -180,20 +127,9 @@ module GTK
     def cos
       Math.cos(self.to_radians)
     end
-
-    def self.aliases
-      [
-        :d,   :idiv,
-        :mwy, :map_with_ys,
-        :m,   :map,
-        :e,   :each
-      ]
-    end
   end
 
   module ObjectTweetcart
-    extend Tweetcart::Include
-
     def SO! *opts
       $args.outputs.solids << opts
     end
@@ -240,30 +176,6 @@ module GTK
 
     def _BO! *opts
       $args.outputs.static_borders << opts
-    end
-
-    def PSO! *opts
-      $args.outputs.p.solids << opts
-    end
-
-    def PSP! *opts
-      $args.outputs.p.sprites << opts
-    end
-
-    def PPR! *opts
-      $args.outputs.p.primitives << opts
-    end
-
-    def PLA! *opts
-      $args.outputs.p.labels << opts
-    end
-
-    def PLI! *opts
-      $args.outputs.p.lines << opts
-    end
-
-    def PBO! *opts
-      $args.outputs.p.borders << opts
     end
   end
 end

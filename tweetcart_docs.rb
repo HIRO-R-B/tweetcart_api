@@ -41,8 +41,8 @@ S
 To make Tweetcart mode available, define your ~tick~ method as ~t~
 #+begin_src
   def t a
-    m = a.i.m                   # args.inputs.mouse
-    a.o.so << [m.x, m.y, 10, 10] # args.outputs.solids
+    m = a.i_m                   # args.inputs.mouse
+    a.sol << [m.x, m.y, 10, 10] # args.outputs.solids
   end
 #+end_src
 
@@ -60,11 +60,11 @@ S
     a.s.r ||= 0 # args.state.r ||= 0
     a.s.r += 1
 
-    a.sp << [640 - 50, 360 - 50, 100, 100, :p, a.s.r] # args.outputs.sprites
+    a.spr << [640 - 50, 360 - 50, 100, 100, :p, a.s.r] # args.outputs.sprites
     # Display a white rotating square in the middle of the screen
 
     m = a.m # a.inputs.mouse
-    a.sp << [m.x - 50, m.y - 50, 100, 100, :c]
+    a.spr << [m.x - 50, m.y - 50, 100, 100, :c]
     # Display a white circle that follows your mouse cursor
   end
 #+end_src
